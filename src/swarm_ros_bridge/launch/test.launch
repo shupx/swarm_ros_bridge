@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<launch>
+
+  <node pkg="swarm_ros_bridge" type="bridge_node" name="swarm_bridge_node" output="screen" >
+    <rosparam command="load" file="$(find swarm_ros_bridge)/config/ros_topics.yaml" />
+  </node>
+
+</launch>
