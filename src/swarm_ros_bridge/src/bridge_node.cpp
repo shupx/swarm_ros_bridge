@@ -1,11 +1,4 @@
-#include <ros/ros.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <iostream>
-#include <unistd.h>
-#include <string>
-#include <geometry_msgs/Twist.h>
-#include <sensor_msgs/Imu.h>
+#include "bridge_node.hpp"
 
 // using namespace std;
 
@@ -239,71 +232,20 @@ void frontier_bridge_cb(int ID, ros::SerializedMessage& m)
 */
 
 
-// template <typename T>
-// void sub_cb(const T &msg)
-// {
-//   std::cout << msg << std::endl;
-//   //std::cout << port << std::endl;
-// }
 
-# define SUB_MAX 50 // max number of subscriber callbacks
-
-struct TopicInfo
-{
-  std::string name;
-  std::string type;
-  std::string ip;
-  int port;
-};
-
-template <typename T, int cout>
+/* uniform callback functions for ROS subscribers */
+template <typename T, int i>
 void sub_cb(const T &msg)
 {
+  static ros::Time t_last;
+  ros::Time t_now = ros::Time::now();
+  if ((t_now - t_last).toSec() * sendTopics[i].max_freq < 1.0)
+    {return;}
+  t_last = t_now;
+
+  // zmq socket send
   std::cout << msg << std::endl;
-  std::cout << cout << std::endl;
-}
-
-template <typename T>
-void (*sub_callbacks[])(const T &)=
-{
-  sub_cb<T,0>, sub_cb<T,1>, sub_cb<T,2>, sub_cb<T,3>, sub_cb<T,4>,
-  sub_cb<T,5>, sub_cb<T,6>, sub_cb<T,7>, sub_cb<T,8>, sub_cb<T,9>,
-  sub_cb<T,10>, sub_cb<T,11>, sub_cb<T,12>, sub_cb<T,13>, sub_cb<T,14>,
-  sub_cb<T,15>, sub_cb<T,16>, sub_cb<T,17>, sub_cb<T,18>, sub_cb<T,19>,
-  sub_cb<T,20>, sub_cb<T,21>, sub_cb<T,22>, sub_cb<T,23>, sub_cb<T,24>,
-  sub_cb<T,25>, sub_cb<T,26>, sub_cb<T,27>, sub_cb<T,28>, sub_cb<T,29>,
-  sub_cb<T,30>, sub_cb<T,31>, sub_cb<T,32>, sub_cb<T,33>, sub_cb<T,34>,
-  sub_cb<T,35>, sub_cb<T,36>, sub_cb<T,37>, sub_cb<T,38>, sub_cb<T,39>,
-  sub_cb<T,40>, sub_cb<T,41>, sub_cb<T,42>, sub_cb<T,43>, sub_cb<T,44>,
-  sub_cb<T,45>, sub_cb<T,46>, sub_cb<T,47>, sub_cb<T,48>, sub_cb<T,49>
-};
-
-template <typename T>
-ros::Subscriber nh_sub(std::string topic_name, ros::NodeHandle nh, int i)
-{
-  return nh.subscribe(topic_name, 10, sub_callbacks<T>[i], ros::TransportHints().tcpNoDelay());
-}
-
-ros::Subscriber topic_subscriber(std::string topic_name, std::string msg_type, ros::NodeHandle nh, int i)
-{
-  if (msg_type == "sensor_msgs/Imu")
-    return nh_sub<sensor_msgs::Imu>(topic_name, nh, i);
-  else if (msg_type == "geometry_msgs/Twist")
-    return nh_sub<geometry_msgs::Twist>(topic_name, nh, i);
-  else{
-    ROS_FATAL("Invalid ROS msg_type \"%s\" in configuration!", msg_type.c_str());
-    exit(1);}
-}
-
-ros::Publisher topic_publisher(std::string topic_name, std::string msg_type, ros::NodeHandle nh)
-{
-  if (msg_type == "sensor_msgs/Imu")
-    return nh.advertise<sensor_msgs::Imu>(topic_name, 10);
-  else if (msg_type == "geometry_msgs/Twist")
-    return nh.advertise<geometry_msgs::Twist>(topic_name, 10);
-  else{
-    ROS_FATAL("Invalid ROS msg_type \"%s\" in configuration!", msg_type.c_str());
-    exit(1);}
+  std::cout << i << std::endl;
 }
 
 
@@ -315,12 +257,6 @@ int main(int argc, char **argv)
   ros::NodeHandle nh("~");
 
   //************************ Parse configuration file **************************
-  XmlRpc::XmlRpcValue ip_xml;
-  XmlRpc::XmlRpcValue send_topics_xml;
-  XmlRpc::XmlRpcValue recv_topics_xml;
-  int len_send; // length(number) of send topics
-  int len_recv; // length(number) of receive topics
-
   // get hostnames and IPs
   if (nh.getParam("IP", ip_xml) == false){
     ROS_ERROR("[bridge node] No IP found in the configuration!");
@@ -351,7 +287,7 @@ int main(int argc, char **argv)
     return 2;
   }
 
-  std::map<std::string, std::string> ip_map; // map host name and IP
+  std::cout << "-------------IP------------" << std::endl;
   for (auto iter = ip_xml.begin(); iter != ip_xml.end(); ++iter)
   {
     std::string host_name = iter->first;
@@ -364,20 +300,18 @@ int main(int argc, char **argv)
     ip_map[host_name] = host_ip;
   }
 
-  std::vector<TopicInfo> sendTopics;
-  std::vector<TopicInfo> recvTopics;
-
+  std::cout << "--------send topics--------" << std::endl;
   std::set<int> srcPorts; // for duplicate check 
-  std::cout << "send: " << std::endl;
   for (int32_t i=0; i < len_send; ++i)
   {
     ROS_ASSERT(send_topics_xml[i].getType() == XmlRpc::XmlRpcValue::TypeStruct);
     XmlRpc::XmlRpcValue send_topic_xml = send_topics_xml[i];
     std::string topic_name = send_topic_xml["topic_name"];
     std::string msg_type = send_topic_xml["msg_type"];
+    int max_freq = send_topic_xml["max_freq"];
     std::string srcIP = ip_map[send_topic_xml["srcIP"]];
     int srcPort = send_topic_xml["srcPort"];
-    TopicInfo topic = {topic_name, msg_type, srcIP, srcPort};
+    TopicInfo topic = {.name=topic_name, .type=msg_type, .max_freq=max_freq, .ip=srcIP, .port=srcPort};
     sendTopics.emplace_back(topic);
     // check for duplicate ports:
     if (srcPorts.find(srcPort) != srcPorts.end()) {
@@ -385,38 +319,43 @@ int main(int argc, char **argv)
       return 3;
     }
     srcPorts.insert(srcPort); // for duplicate check 
-    std::cout << topic.name << std::endl;
+    std::cout << topic.name << "  " << topic.max_freq << "Hz(max)" << std::endl;
   }
 
-  std::cout << "receive: " << std::endl;
+  std::cout << "-------receive topics------" << std::endl;
   for (int32_t i=0; i < len_recv; ++i)
   {
     ROS_ASSERT(recv_topics_xml[i].getType() == XmlRpc::XmlRpcValue::TypeStruct);
     XmlRpc::XmlRpcValue recv_topic_xml = recv_topics_xml[i];
     std::string topic_name = recv_topic_xml["topic_name"];
     std::string msg_type = recv_topic_xml["msg_type"];
+    int max_freq = recv_topic_xml["max_freq"];
     std::string srcIP = ip_map[recv_topic_xml["srcIP"]];
     int srcPort = recv_topic_xml["srcPort"];
-    TopicInfo topic = {topic_name, msg_type, srcIP, srcPort};
+    TopicInfo topic = {.name=topic_name, .type=msg_type, .max_freq=max_freq, .ip=srcIP, .port=srcPort};
     recvTopics.emplace_back(topic);
     std::cout << topic.name << std::endl;
   }
 
   // ******************* ROS subscribe and publish *************************
-  std::vector<ros::Subscriber> topic_subs(len_send);
-  std::vector<ros::Publisher> topic_pubs(len_recv);
-
-  for (int32_t i=0; i < len_send; ++i) // ROS topic subsrcibe and send
+  //ROS topic subsrcibe and send
+  for (int32_t i=0; i < len_send; ++i)
   {
     //nh_sub<type_name>(sendTopics[i].name, nh, i);
-    topic_subs[i] = topic_subscriber(sendTopics[i].name, sendTopics[i].type, nh, i);
+    ros::Subscriber subscriber;
+    // The uniform callback function is sub_cb()
+    subscriber = topic_subscriber(sendTopics[i].name, sendTopics[i].type, nh, i);
+    topic_subs.emplace_back(subscriber);
     // use topic_subs[i].shutdown() to unsubscribe
   }
 
-  for (int32_t i=0; i < len_recv; ++i) // ROS topic receive and publish
+  // ROS topic receive and publish
+  for (int32_t i=0; i < len_recv; ++i) 
   {
     //topic_pubs[i] = nh.advertise<geometry_msgs::Twist>(recvTopics[i].name, 10);
-    topic_pubs[i] = topic_publisher(recvTopics[i].name, recvTopics[i].type, nh);
+    ros::Publisher publisher;
+    publisher = topic_publisher(recvTopics[i].name, recvTopics[i].type, nh);
+    topic_pubs.emplace_back(publisher);
   }
 
   ros::spin();

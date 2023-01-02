@@ -1,30 +1,33 @@
-# ### list the IP of self and neighbors here (names can be random) ###
+### list the IP of self and neighbors here (names can be random) ###
 IP:
   self: '*'   # '*' stands for all self IPs
   robot1: 127.0.0.1
   robot2: 127.0.0.2
   groundstation: 127.0.0.1
 
-# ####### Send these ROS messages to remote robots #######
+####### Send these ROS messages to remote robots #######
 send_topics:
 - topic_name: /car20/imu # send the messages of this ROS topic
-  msg_type: sensor_msgs/Imu # ROS message type
+  msg_type: sensor_msgs/Imu # ROS message type (rosmsg style)
+  max_freq: 50 # max send frequency (Hz) int
   srcIP: self # self IP
   srcPort: 3001 # the port of each send_topic should be different
 
 - topic_name: /car30/imu # send the messages of this ROS topic
-  msg_type: geometry_msgs/Twist # ROS message type
+  msg_type: geometry_msgs/Twist # ROS message type (rosmsg style)
+  max_freq: 100 # max send frequency (Hz) int
   srcIP: self # self IP
   srcPort: 3002 # the port of each send_topic should be different
 
 - topic_name: /car40/imu # send the messages of this ROS topic
-  msg_type: sensor_msgs/Imu # ROS message type
+  msg_type: sensor_msgs/Imu # ROS message type (rosmsg style)
+  max_freq: 50 # max send frequency (Hz) int
   srcIP: self # self IP
   srcPort: 3003 # the port of each send_topic should be different
 
-# ####### receive these ROS messages from remote robots #######
+####### receive these ROS messages from remote robots #######
 recv_topics:
 - topic_name: /car20/cmd_vel # the received messages will be published in this topic name
-  msg_type: geometry_msgs/Twist # ROS message type
+  msg_type: geometry_msgs/Twist # ROS message type (rosmsg style)
   srcIP: groundstation # message source IP
   srcPort: 3101 # message source port
