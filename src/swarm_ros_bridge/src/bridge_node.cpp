@@ -248,6 +248,55 @@ void sub_cb(const T &msg)
   std::cout << i << std::endl;
 }
 
+/* uniform deserialize and publish the receiving messages */
+template<typename T>
+void deserialize_pub(uint8_t* buffer_ptr, int i)
+{
+  // read msg length
+  uint32_t msg_size = *((uint32_t *)buffer_ptr); // the first int is the msg length
+  buffer_ptr += sizeof(uint32_t); // move the ptr to read data
+  // deserialize the receiving messages into ROS msg
+  T msg;
+  namespace ser = ros::serialization;
+  ser::IStream stream(buffer_ptr, msg_size);
+  ser::deserialize(stream, msg);
+  // publish ROS msg
+  topic_pubs[i].publish(msg);
+}
+
+/* receive thread function to receive messages and publish them */
+void recv_func(int i)
+{
+  while(true)
+  {
+    zmqpp::message recv_array;
+    if (receivers[i]->receive(recv_array, false))
+    {
+      uint8_t b;
+      recv_array.get(b); // uint8_t const* byte = static_cast<uint8_t const*>(raw_data(part)); b = *byte;
+      // unpack meta data
+      size_t data_len;
+      recv_array >> data_len;  // recv_array.get(data_len, recv_array.read_cursor++); 
+      // // receive message ptr
+      // ros::SerializedMessage msg_ser;
+      // msg_ser.buf.reset(new uint8_t[data_len]);
+      // memcpy(msg_ser.buf.get(), static_cast<const uint8_t *>(recv_array.raw_data(recv_array.read_cursor())), data_len);
+
+      uint8_t buffer[1000]; //改成动态数组 int *ptr = new int[uint8_t[data_len]]
+      memcpy(&buffer, static_cast<const uint8_t *>(recv_array.raw_data(recv_array.read_cursor())), data_len);
+      //uint8_t* a = static_cast<const uint8_t *>(recv_array.raw_data(recv_array.read_cursor()));
+      uint8_t* buffer_ptr = buffer;
+      read_publish(buffer_ptr, recvTopics[i].type, i);
+
+
+
+      // uint8_t *ptr = static_cast<const uint8_t *>(recv_array.raw_data());
+      // // deserialize the receiving messages into ROS msg and publish
+      // read_publish(ptr, recvTopics[i].type, i);
+    }
+  }
+}
+
 
 //TODO: generate or delete topic message transfers through a remote zmq service.
 
@@ -337,6 +386,26 @@ int main(int argc, char **argv)
     std::cout << topic.name << std::endl;
   }
 
+  // ********************* zmq socket initialize ***************************
+  // send sockets (zmq socket PUB mode)
+  for (int32_t i=0; i < len_send; ++i)
+  {
+    const std::string url = "tcp://" + sendTopics[i].ip + ":" + std::to_string(sendTopics[i].port);
+    std::unique_ptr<zmqpp::socket> sender(new zmqpp::socket(context, zmqpp::socket_type::pub));
+    sender->bind(url);
+    senders.emplace_back(std::move(sender)); //sender is now released by std::move
+  }
+
+  // receive sockets (zmq socket SUB mode) and recv threads
+  for (int32_t i=0; i < len_recv; ++i)
+  {
+    const std::string url = "tcp://" + recvTopics[i].ip + ":" + std::to_string(recvTopics[i].port);
+    std::unique_ptr<zmqpp::socket> receiver(new zmqpp::socket(context, zmqpp::socket_type::sub));
+    receiver->connect(url);
+    receivers.emplace_back(std::move(receiver));
+  }
+
+
   // ******************* ROS subscribe and publish *************************
   //ROS topic subsrcibe and send
   for (int32_t i=0; i < len_send; ++i)
@@ -356,6 +425,12 @@ int main(int argc, char **argv)
     ros::Publisher publisher;
     publisher = topic_publisher(recvTopics[i].name, recvTopics[i].type, nh);
     topic_pubs.emplace_back(publisher);
+  }
+
+  // ****************** launch receive threads *****************************
+  for (int32_t i=0; i < len_recv; ++i)
+  {
+    recv_threads.emplace_back(std::thread(&recv_func, i));
   }
 
   ros::spin();

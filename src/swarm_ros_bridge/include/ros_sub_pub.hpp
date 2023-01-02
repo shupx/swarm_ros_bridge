@@ -20,6 +20,10 @@ ros::Subscriber topic_subscriber(std::string topic_name, std::string msg_type, r
 
 ros::Publisher topic_publisher(std::string topic_name, std::string msg_type, ros::NodeHandle nh);
 
+template<typename T>
+void deserialize_pub(uint8_t* buffer_ptr, int i);
+
+void read_publish(uint8_t* buffer_ptr, std::string msg_type, int i);
 
 template <typename T>
 void (*sub_callbacks[])(const T &)=
@@ -59,6 +63,17 @@ ros::Publisher topic_publisher(std::string topic_name, std::string msg_type, ros
     return nh.advertise<sensor_msgs::Imu>(topic_name, 10);
   else if (msg_type == "geometry_msgs/Twist")
     return nh.advertise<geometry_msgs::Twist>(topic_name, 10);
+  else{
+    ROS_FATAL("Invalid ROS msg_type \"%s\" in configuration!", msg_type.c_str());
+    exit(1);}
+}
+
+void read_publish(uint8_t* buffer_ptr, std::string msg_type, int i)
+{
+  if (msg_type == "sensor_msgs/Imu")
+    deserialize_pub<sensor_msgs::Imu>(buffer_ptr, i);
+  else if (msg_type == "geometry_msgs/Twist")
+    deserialize_pub<geometry_msgs::Twist>(buffer_ptr, i);
   else{
     ROS_FATAL("Invalid ROS msg_type \"%s\" in configuration!", msg_type.c_str());
     exit(1);}
