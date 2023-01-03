@@ -71,4 +71,6 @@ add_executable(bridge_node src/bridge_node.cpp)
 ## Specify libraries to link a library or executable target against
 target_link_libraries(bridge_node
    ${catkin_LIBRARIES}
+   zmq
+   zmqpp
 )
