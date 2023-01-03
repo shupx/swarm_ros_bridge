@@ -237,26 +237,42 @@ void frontier_bridge_cb(int ID, ros::SerializedMessage& m)
 template <typename T, int i>
 void sub_cb(const T &msg)
 {
+  // frequency control 
   static ros::Time t_last;
   ros::Time t_now = ros::Time::now();
   if ((t_now - t_last).toSec() * sendTopics[i].max_freq < 1.0)
     {return;}
   t_last = t_now;
 
-  // zmq socket send
-  std::cout << msg << std::endl;
-  std::cout << i << std::endl;
+  // serialize the sending messages into send_buffer
+  namespace ser = ros::serialization;
+  size_t data_len = ser::serializationLength(msg); // bytes length of msg
+  std::unique_ptr<uint8_t> send_buffer(new uint8_t[data_len]);  // create a dynamic length array
+  ser::OStream stream(send_buffer.get(), data_len);
+  ser::serialize(stream, msg);
+
+  // zmq send message
+  zmqpp::message send_array;
+  send_array << data_len; 
+  /* 
+  send_array.add_raw(reinterpret_cast<void const*>(&data_len), sizeof(size_t));
+  */
+  send_array.add_raw(reinterpret_cast<void const *>(send_buffer.get()), data_len);
+  std::cout << "ready send!" << std::endl;
+  senders[i]->send(send_array, false);  //block here, wait for sending
+  std::cout << "send!" << std::endl;
+
+  // std::cout << msg << std::endl;
+  // std::cout << i << std::endl;
 }
+
 
 /* uniform deserialize and publish the receiving messages */
 template<typename T>
-void deserialize_pub(uint8_t* buffer_ptr, int i)
+void deserialize_pub(uint8_t* buffer_ptr, size_t msg_size, int i)
 {
-  // read msg length
-  uint32_t msg_size = *((uint32_t *)buffer_ptr); // the first int is the msg length
-  buffer_ptr += sizeof(uint32_t); // move the ptr to read data
-  // deserialize the receiving messages into ROS msg
   T msg;
+  // deserialize the receiving messages into ROS msg
   namespace ser = ros::serialization;
   ser::IStream stream(buffer_ptr, msg_size);
   ser::deserialize(stream, msg);
@@ -264,35 +280,31 @@ void deserialize_pub(uint8_t* buffer_ptr, int i)
   topic_pubs[i].publish(msg);
 }
 
+
 /* receive thread function to receive messages and publish them */
 void recv_func(int i)
 {
   while(true)
   {
     zmqpp::message recv_array;
+    std::cout << "ready receive!" << std::endl;
     if (receivers[i]->receive(recv_array, false))
     {
-      uint8_t b;
-      recv_array.get(b); // uint8_t const* byte = static_cast<uint8_t const*>(raw_data(part)); b = *byte;
-      // unpack meta data
+      std::cout << "receive!" << std::endl;
       size_t data_len;
-      recv_array >> data_len;  // recv_array.get(data_len, recv_array.read_cursor++); 
-      // // receive message ptr
-      // ros::SerializedMessage msg_ser;
-      // msg_ser.buf.reset(new uint8_t[data_len]);
-      // memcpy(msg_ser.buf.get(), static_cast<const uint8_t *>(recv_array.raw_data(recv_array.read_cursor())), data_len);
+      recv_array >> data_len; // unpack meta data
+      /*  recv_array.get(&data_len, recv_array.read_cursor++); 
+          void get(T &value, size_t const cursor){
+            uint8_t const* byte = static_cast<uint8_t const*>(raw_data(cursor)); 
+            b = *byte;} */
+      // a dynamic length array by unique_ptr
+      std::unique_ptr<uint8_t> recv_buffer(new uint8_t[data_len]);  
+      // continue to copy the raw_data of recv_array into buffer
+      memcpy(recv_buffer.get(), static_cast<const uint8_t *>(recv_array.raw_data(recv_array.read_cursor())), data_len);
+      deserialize_publish(recv_buffer.get(), data_len, recvTopics[i].type, i);
 
-      uint8_t buffer[1000]; //改成动态数组 int *ptr = new int[uint8_t[data_len]]
-      memcpy(&buffer, static_cast<const uint8_t *>(recv_array.raw_data(recv_array.read_cursor())), data_len);
-      //uint8_t* a = static_cast<const uint8_t *>(recv_array.raw_data(recv_array.read_cursor()));
-      uint8_t* buffer_ptr = buffer;
-      read_publish(buffer_ptr, recvTopics[i].type, i);
-
-
-
-      // uint8_t *ptr = static_cast<const uint8_t *>(recv_array.raw_data());
-      // // deserialize the receiving messages into ROS msg and publish
-      // read_publish(ptr, recvTopics[i].type, i);
+      std::cout << data_len << std::endl;
+      std::cout << recv_buffer.get() << std::endl;
     }
   }
 }
@@ -391,7 +403,7 @@ int main(int argc, char **argv)
   for (int32_t i=0; i < len_send; ++i)
   {
     const std::string url = "tcp://" + sendTopics[i].ip + ":" + std::to_string(sendTopics[i].port);
-    std::unique_ptr<zmqpp::socket> sender(new zmqpp::socket(context, zmqpp::socket_type::pub));
+    std::unique_ptr<zmqpp::socket> sender(new zmqpp::socket(context, zmqpp::socket_type::push));
     sender->bind(url);
     senders.emplace_back(std::move(sender)); //sender is now released by std::move
   }
@@ -400,7 +412,7 @@ int main(int argc, char **argv)
   for (int32_t i=0; i < len_recv; ++i)
   {
     const std::string url = "tcp://" + recvTopics[i].ip + ":" + std::to_string(recvTopics[i].port);
-    std::unique_ptr<zmqpp::socket> receiver(new zmqpp::socket(context, zmqpp::socket_type::sub));
+    std::unique_ptr<zmqpp::socket> receiver(new zmqpp::socket(context, zmqpp::socket_type::pull));
     receiver->connect(url);
     receivers.emplace_back(std::move(receiver));
   }

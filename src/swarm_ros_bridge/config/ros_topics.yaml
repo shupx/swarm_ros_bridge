@@ -1,6 +1,6 @@
 ### list the IP of self and neighbors here (names can be random) ###
 IP:
-  self: '*'   # '*' stands for all self IPs
+  self: 127.0.0.1   # '*' stands for all self IPs
   robot1: 127.0.0.1
   robot2: 127.0.0.2
   groundstation: 127.0.0.1
@@ -15,7 +15,7 @@ send_topics:
 
 - topic_name: /car30/imu # send the messages of this ROS topic
   msg_type: geometry_msgs/Twist # ROS message type (rosmsg style)
-  max_freq: 100 # max send frequency (Hz) int
+  max_freq: 50 # max send frequency (Hz) int
   srcIP: self # self IP
   srcPort: 3002 # the port of each send_topic should be different
 
@@ -27,7 +27,7 @@ send_topics:
 
 ####### receive these ROS messages from remote robots #######
 recv_topics:
-- topic_name: /car20/cmd_vel # the received messages will be published in this topic name
+- topic_name: /car30/imu_recv # the received messages will be published in this topic name
   msg_type: geometry_msgs/Twist # ROS message type (rosmsg style)
   srcIP: groundstation # message source IP
-  srcPort: 3101 # message source port
+  srcPort: 3002 # message source port
