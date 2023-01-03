@@ -258,9 +258,9 @@ void sub_cb(const T &msg)
   send_array.add_raw(reinterpret_cast<void const*>(&data_len), sizeof(size_t));
   */
   send_array.add_raw(reinterpret_cast<void const *>(send_buffer.get()), data_len);
-  std::cout << "ready send!" << std::endl;
+  // std::cout << "ready send!" << std::endl;
   senders[i]->send(send_array, false);  //block here, wait for sending
-  std::cout << "send!" << std::endl;
+  // std::cout << "send!" << std::endl;
 
   // std::cout << msg << std::endl;
   // std::cout << i << std::endl;
@@ -287,10 +287,10 @@ void recv_func(int i)
   while(true)
   {
     zmqpp::message recv_array;
-    std::cout << "ready receive!" << std::endl;
+    // std::cout << "ready receive!" << std::endl;
     if (receivers[i]->receive(recv_array, false))
     {
-      std::cout << "receive!" << std::endl;
+      // std::cout << "receive!" << std::endl;
       size_t data_len;
       recv_array >> data_len; // unpack meta data
       /*  recv_array.get(&data_len, recv_array.read_cursor++); 
@@ -303,8 +303,8 @@ void recv_func(int i)
       memcpy(recv_buffer.get(), static_cast<const uint8_t *>(recv_array.raw_data(recv_array.read_cursor())), data_len);
       deserialize_publish(recv_buffer.get(), data_len, recvTopics[i].type, i);
 
-      std::cout << data_len << std::endl;
-      std::cout << recv_buffer.get() << std::endl;
+      // std::cout << data_len << std::endl;
+      // std::cout << recv_buffer.get() << std::endl;
     }
   }
 }
@@ -403,7 +403,7 @@ int main(int argc, char **argv)
   for (int32_t i=0; i < len_send; ++i)
   {
     const std::string url = "tcp://" + sendTopics[i].ip + ":" + std::to_string(sendTopics[i].port);
-    std::unique_ptr<zmqpp::socket> sender(new zmqpp::socket(context, zmqpp::socket_type::push));
+    std::unique_ptr<zmqpp::socket> sender(new zmqpp::socket(context, zmqpp::socket_type::pub));
     sender->bind(url);
     senders.emplace_back(std::move(sender)); //sender is now released by std::move
   }
@@ -412,7 +412,9 @@ int main(int argc, char **argv)
   for (int32_t i=0; i < len_recv; ++i)
   {
     const std::string url = "tcp://" + recvTopics[i].ip + ":" + std::to_string(recvTopics[i].port);
-    std::unique_ptr<zmqpp::socket> receiver(new zmqpp::socket(context, zmqpp::socket_type::pull));
+    std::string const zmq_topic = ""; // "" means all zmq topic
+    std::unique_ptr<zmqpp::socket> receiver(new zmqpp::socket(context, zmqpp::socket_type::sub));
+    receiver->subscribe(zmq_topic);
     receiver->connect(url);
     receivers.emplace_back(std::move(receiver));
   }
