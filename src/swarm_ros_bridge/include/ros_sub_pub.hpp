@@ -1,9 +1,28 @@
 #ifndef __ROS_SUB_PUB__
 #define __ROS_SUB_PUB__
 #include <ros/ros.h>
-#include <geometry_msgs/Twist.h>
-#include <sensor_msgs/Imu.h>
 
+#include <sensor_msgs/Imu.h>
+#define MSG_TYPE1 "sensor_msgs/Imu"
+#define MSG_CLASS1 sensor_msgs::Imu
+
+#include <geometry_msgs/Twist.h>
+#define MSG_TYPE2 "geometry_msgs/Twist"
+#define MSG_CLASS2 geometry_msgs::Twist
+
+// #include <xxx/yy.h>
+// #define MSG_TYPE3 "xxx/yy"
+// #define MSG_CLASS3 xxx::yy
+
+// #include <xxx/yy.h>
+// #define MSG_TYPE4 "xxx/yy"
+// #define MSG_CLASS4 xxx::yy
+
+// ......
+
+// #include <xxx/yy.h>
+// #define MSG_TYPE10 "xxx/yy"
+// #define MSG_CLASS10 xxx::yy
 
 # define SUB_MAX 50 // max number of subscriber callbacks
 
@@ -49,35 +68,140 @@ ros::Subscriber nh_sub(std::string topic_name, ros::NodeHandle nh, int i)
 
 ros::Subscriber topic_subscriber(std::string topic_name, std::string msg_type, ros::NodeHandle nh, int i)
 {
-  if (msg_type == "sensor_msgs/Imu")
-    return nh_sub<sensor_msgs::Imu>(topic_name, nh, i);
-  else if (msg_type == "geometry_msgs/Twist")
-    return nh_sub<geometry_msgs::Twist>(topic_name, nh, i);
-  else{
+  #ifdef MSG_TYPE1
+    if (msg_type == MSG_TYPE1)
+        return nh_sub<MSG_CLASS1>(topic_name, nh, i);
+  #endif
+  #ifdef MSG_TYPE2
+    if (msg_type == MSG_TYPE2)
+        return nh_sub<MSG_CLASS2>(topic_name, nh, i);
+  #endif
+  #ifdef MSG_TYPE3
+    if (msg_type == MSG_TYPE3)
+        return nh_sub<MSG_CLASS3>(topic_name, nh, i);
+  #endif
+  #ifdef MSG_TYPE4
+    if (msg_type == MSG_TYPE4)
+        return nh_sub<MSG_CLASS4>(topic_name, nh, i);
+  #endif  
+  #ifdef MSG_TYPE5
+    if (msg_type == MSG_TYPE5)
+        return nh_sub<MSG_CLASS5>(topic_name, nh, i);
+  #endif  
+  #ifdef MSG_TYPE6
+    if (msg_type == MSG_TYPE6)
+        return nh_sub<MSG_CLASS6>(topic_name, nh, i);
+  #endif  
+  #ifdef MSG_TYPE7
+    if (msg_type == MSG_TYPE7)
+        return nh_sub<MSG_CLASS7>(topic_name, nh, i);
+  #endif  
+  #ifdef MSG_TYPE8
+    if (msg_type == MSG_TYPE8)
+        return nh_sub<MSG_CLASS8>(topic_name, nh, i);
+  #endif  
+  #ifdef MSG_TYPE9
+    if (msg_type == MSG_TYPE9)
+        return nh_sub<MSG_CLASS9>(topic_name, nh, i);
+  #endif  
+  #ifdef MSG_TYPE10
+    if (msg_type == MSG_TYPE10)
+        return nh_sub<MSG_CLASS10>(topic_name, nh, i);
+  #endif  
     ROS_FATAL("Invalid ROS msg_type \"%s\" in configuration!", msg_type.c_str());
-    exit(1);}
+    exit(1);
 }
 
 ros::Publisher topic_publisher(std::string topic_name, std::string msg_type, ros::NodeHandle nh)
 {
-  if (msg_type == "sensor_msgs/Imu")
-    return nh.advertise<sensor_msgs::Imu>(topic_name, 10);
-  else if (msg_type == "geometry_msgs/Twist")
-    return nh.advertise<geometry_msgs::Twist>(topic_name, 10);
-  else{
+  #ifdef MSG_TYPE1
+    if (msg_type == MSG_TYPE1)
+        return nh.advertise<MSG_CLASS1>(topic_name, 10);
+  #endif
+  #ifdef MSG_TYPE2
+    if (msg_type == MSG_TYPE2)
+        return nh.advertise<MSG_CLASS2>(topic_name, 10);
+  #endif
+  #ifdef MSG_TYPE3
+    if (msg_type == MSG_TYPE3)
+        return nh.advertise<MSG_CLASS3>(topic_name, 10);
+  #endif
+  #ifdef MSG_TYPE4
+    if (msg_type == MSG_TYPE4)
+        return nh.advertise<MSG_CLASS4>(topic_name, 10);
+  #endif
+  #ifdef MSG_TYPE5
+    if (msg_type == MSG_TYPE5)
+        return nh.advertise<MSG_CLASS5>(topic_name, 10);
+  #endif
+  #ifdef MSG_TYPE6
+    if (msg_type == MSG_TYPE6)
+        return nh.advertise<MSG_CLASS6>(topic_name, 10);
+  #endif
+  #ifdef MSG_TYPE7
+    if (msg_type == MSG_TYPE7)
+        return nh.advertise<MSG_CLASS7>(topic_name, 10);
+  #endif
+  #ifdef MSG_TYPE8
+    if (msg_type == MSG_TYPE8)
+        return nh.advertise<MSG_CLASS8>(topic_name, 10);
+  #endif
+  #ifdef MSG_TYPE9
+    if (msg_type == MSG_TYPE9)
+        return nh.advertise<MSG_CLASS9>(topic_name, 10);
+  #endif
+  #ifdef MSG_TYPE10
+    if (msg_type == MSG_TYPE10)
+        return nh.advertise<MSG_CLASS10>(topic_name, 10);
+  #endif
     ROS_FATAL("Invalid ROS msg_type \"%s\" in configuration!", msg_type.c_str());
-    exit(1);}
+    exit(1);
 }
 
 void deserialize_publish(uint8_t* buffer_ptr, size_t msg_size, std::string msg_type, int i)
 {
-  if (msg_type == "sensor_msgs/Imu")
-    deserialize_pub<sensor_msgs::Imu>(buffer_ptr, msg_size, i);
-  else if (msg_type == "geometry_msgs/Twist")
-    deserialize_pub<geometry_msgs::Twist>(buffer_ptr, msg_size, i);
-  else{
+  #ifdef MSG_TYPE1
+    if (msg_type == MSG_TYPE1)
+        return deserialize_pub<MSG_CLASS1>(buffer_ptr, msg_size, i);
+  #endif
+  #ifdef MSG_TYPE2
+    if (msg_type == MSG_TYPE2)
+        return deserialize_pub<MSG_CLASS2>(buffer_ptr, msg_size, i);
+  #endif
+  #ifdef MSG_TYPE3
+    if (msg_type == MSG_TYPE3)
+        return deserialize_pub<MSG_CLASS3>(buffer_ptr, msg_size, i);
+  #endif
+  #ifdef MSG_TYPE4
+    if (msg_type == MSG_TYPE4)
+        return deserialize_pub<MSG_CLASS4>(buffer_ptr, msg_size, i);
+  #endif
+  #ifdef MSG_TYPE5
+    if (msg_type == MSG_TYPE5)
+        return deserialize_pub<MSG_CLASS5>(buffer_ptr, msg_size, i);
+  #endif
+  #ifdef MSG_TYPE6
+    if (msg_type == MSG_TYPE6)
+        return deserialize_pub<MSG_CLASS6>(buffer_ptr, msg_size, i);
+  #endif
+  #ifdef MSG_TYPE7
+    if (msg_type == MSG_TYPE7)
+        return deserialize_pub<MSG_CLASS7>(buffer_ptr, msg_size, i);
+  #endif
+  #ifdef MSG_TYPE8
+    if (msg_type == MSG_TYPE8)
+        return deserialize_pub<MSG_CLASS8>(buffer_ptr, msg_size, i);
+  #endif
+  #ifdef MSG_TYPE9
+    if (msg_type == MSG_TYPE9)
+        return deserialize_pub<MSG_CLASS9>(buffer_ptr, msg_size, i);
+  #endif
+  #ifdef MSG_TYPE10
+    if (msg_type == MSG_TYPE10)
+        return deserialize_pub<MSG_CLASS10>(buffer_ptr, msg_size, i);
+  #endif
     ROS_FATAL("Invalid ROS msg_type \"%s\" in configuration!", msg_type.c_str());
-    exit(1);}
+    exit(1);
 }
 
 #endif

@@ -1,4 +1,4 @@
-### supported ROS message types:
+### supported ROS message types(modify or add in ros_sub_pub.hpp):
 # sensor_msgs/Imu
 # geometry_msgs/Twist
 ### max support send topics number: 50
