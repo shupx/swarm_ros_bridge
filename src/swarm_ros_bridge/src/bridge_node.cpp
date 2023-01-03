@@ -6,29 +6,30 @@
 template <typename T, int i>
 void sub_cb(const T &msg)
 {
-  // frequency control 
-  static ros::Time t_last;
+  /* frequency control */
   ros::Time t_now = ros::Time::now();
-  if ((t_now - t_last).toSec() * sendTopics[i].max_freq < 1.0)
+  if ((t_now - sub_t_last[i]).toSec() * sendTopics[i].max_freq < 1.0)
     {return;}
-  t_last = t_now;
+  sub_t_last[i] = t_now;
 
-  // serialize the sending messages into send_buffer
+  /* serialize the sending messages into send_buffer */
   namespace ser = ros::serialization;
   size_t data_len = ser::serializationLength(msg); // bytes length of msg
   std::unique_ptr<uint8_t> send_buffer(new uint8_t[data_len]);  // create a dynamic length array
   ser::OStream stream(send_buffer.get(), data_len);
   ser::serialize(stream, msg);
 
-  // zmq send message
+  /* zmq send message */
   zmqpp::message send_array;
   send_array << data_len; 
-  /* 
-  send_array.add_raw(reinterpret_cast<void const*>(&data_len), sizeof(size_t));
+  /* equal to:
+    send_array.add_raw(reinterpret_cast<void const*>(&data_len), sizeof(size_t));
   */
   send_array.add_raw(reinterpret_cast<void const *>(send_buffer.get()), data_len);
   // std::cout << "ready send!" << std::endl;
-  senders[i]->send(send_array, false);  //block here, wait for sending
+  // send(&, true) for non-blocking, send(&, false) for blocking
+  bool dont_block = false;
+  senders[i]->send(send_array, dont_block);
   // std::cout << "send!" << std::endl;
 
   // std::cout << msg << std::endl;
@@ -53,19 +54,25 @@ void deserialize_pub(uint8_t* buffer_ptr, size_t msg_size, int i)
 /* receive thread function to receive messages and publish them */
 void recv_func(int i)
 {
-  while(true)
+  while(recv_thread_flags[i])
   {
+    /* receive and process message */
     zmqpp::message recv_array;
+    bool recv_flag; // receive success flag
     // std::cout << "ready receive!" << std::endl;
-    if (receivers[i]->receive(recv_array, false))
+    // receive(&,true) for non-blocking, receive(&,false) for blocking
+    bool dont_block = false; // 'true' leads to high cpu load
+    if (recv_flag = receivers[i]->receive(recv_array, dont_block))
     {
       // std::cout << "receive!" << std::endl;
       size_t data_len;
       recv_array >> data_len; // unpack meta data
-      /*  recv_array.get(&data_len, recv_array.read_cursor++); 
-          void get(T &value, size_t const cursor){
-            uint8_t const* byte = static_cast<uint8_t const*>(raw_data(cursor)); 
-            b = *byte;} */
+      /*  equal to:
+        recv_array.get(&data_len, recv_array.read_cursor++); 
+        void get(T &value, size_t const cursor){
+          uint8_t const* byte = static_cast<uint8_t const*>(raw_data(cursor)); 
+          b = *byte;} 
+      */
       // a dynamic length array by unique_ptr
       std::unique_ptr<uint8_t> recv_buffer(new uint8_t[data_len]);  
       // continue to copy the raw_data of recv_array into buffer
@@ -75,9 +82,37 @@ void recv_func(int i)
       // std::cout << data_len << std::endl;
       // std::cout << recv_buffer.get() << std::endl;
     }
+
+    /* if receive() does not block, sleep to decrease loop rate */
+    if (dont_block)
+      std::this_thread::sleep_for(std::chrono::microseconds(1000)); // sleep for us
+    else
+    {
+      /* check and report receive state */
+      if (recv_flag != recv_flags_last[i]) // false -> true(first message in)
+        ROS_INFO("[bridge node] \"%s\" received!", recvTopics[i].name.c_str());
+      recv_flags_last[i] = recv_flag;
+    }
   }
+  return;
 }
 
+/* close recv socket, unsubscribe ROS topic */
+void stop_send(int i)
+{
+  // senders[i]->unbind(std::string const &endpoint);
+  senders[i]->close(); // close the send socket
+  topic_subs[i].shutdown(); // unsubscribe
+}
+
+/* stop recv thread, close recv socket, unadvertise ROS topic */
+void stop_recv(int i)
+{
+  recv_thread_flags[i] = false; // finish recv_func()
+  // receivers[i]->disconnect(std::string &endpoint);
+  receivers[i]->close(); // close the receive socket
+  topic_pubs[i].shutdown(); // unadvertise
+}
 
 //TODO: generate or delete topic message transfers through a remote zmq service.
 
@@ -177,7 +212,7 @@ int main(int argc, char **argv)
     senders.emplace_back(std::move(sender)); //sender is now released by std::move
   }
 
-  // receive sockets (zmq socket SUB mode) and recv threads
+  // receive sockets (zmq socket SUB mode)
   for (int32_t i=0; i < len_recv; ++i)
   {
     const std::string url = "tcp://" + recvTopics[i].ip + ":" + std::to_string(recvTopics[i].port);
@@ -193,7 +228,7 @@ int main(int argc, char **argv)
   //ROS topic subsrcibe and send
   for (int32_t i=0; i < len_send; ++i)
   {
-    //nh_sub<type_name>(sendTopics[i].name, nh, i);
+    sub_t_last.emplace_back(ros::Time::now()); // sub_cb called last time
     ros::Subscriber subscriber;
     // The uniform callback function is sub_cb()
     subscriber = topic_subscriber(sendTopics[i].name, sendTopics[i].type, nh, i);
@@ -204,7 +239,6 @@ int main(int argc, char **argv)
   // ROS topic receive and publish
   for (int32_t i=0; i < len_recv; ++i) 
   {
-    //topic_pubs[i] = nh.advertise<geometry_msgs::Twist>(recvTopics[i].name, 10);
     ros::Publisher publisher;
     publisher = topic_publisher(recvTopics[i].name, recvTopics[i].type, nh);
     topic_pubs.emplace_back(publisher);
@@ -213,10 +247,21 @@ int main(int argc, char **argv)
   // ****************** launch receive threads *****************************
   for (int32_t i=0; i < len_recv; ++i)
   {
+    recv_thread_flags.emplace_back(true); // enable receive thread flags
+    recv_flags_last.emplace_back(false); // receive success flag
     recv_threads.emplace_back(std::thread(&recv_func, i));
   }
 
   ros::spin();
 
+  // ***************** stop send/receive ******************************
+  for (int32_t i=0; i < len_send; ++i){
+    stop_send(i);
+  }
+
+  for (int32_t i=0; i < len_recv; ++i){
+    stop_recv(i);
+  }
+  
   return 0;
 }

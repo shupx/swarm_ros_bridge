@@ -7,7 +7,14 @@
 #include <iostream>
 #include <unistd.h>
 #include <string>
-#include <zmqpp/zmqpp.hpp> // sudo apt install libzmqpp-dev
+#include <zmqpp/zmqpp.hpp>
+/*
+zmqpp is the c++ wrapper around ZeroMQ
+Intall zmqpp first:
+    sudo apt install libzmqpp-dev
+zmqpp reference link:
+    https://zeromq.github.io/zmqpp/namespacezmqpp.html
+*/
 #include "ros_sub_pub.hpp"
 
 struct TopicInfo
@@ -37,12 +44,18 @@ std::vector<std::unique_ptr<zmqpp::socket>> senders;   //index senders
 std::vector<std::unique_ptr<zmqpp::socket>> receivers; //index receivers
 
 // ******************* ROS subscribe and publish *************************
+std::vector<ros::Time> sub_t_last;
 std::vector<ros::Subscriber> topic_subs;
 std::vector<ros::Publisher> topic_pubs;
 
 // ****************** launch receive threads *****************************
+std::vector<bool> recv_thread_flags;
+std::vector<bool> recv_flags_last;
 std::vector<std::thread> recv_threads;
 void recv_func(int i);
 
+// ***************** stop send/receive ******************************
+void stop_send(int i);
+void stop_recv(int i);
 
 #endif
