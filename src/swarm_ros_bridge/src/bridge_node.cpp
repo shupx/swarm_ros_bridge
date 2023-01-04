@@ -1,6 +1,28 @@
+/**
+ * @file bridge_node.cpp
+ * @author Peixuan Shu (shupeixuan@qq.com)
+ * @brief Reliable TCP bridge for ros data transfer in unstable network.
+ * It will send/receive the specified ROS topics in ../config/ros_topics.yaml
+ * It uses zmq socket(PUB/SUB mode), which reconnects others autonomously and
+ * supports 1-N pub-sub connection even with TCP protocol.
+ * 
+ * Note: This program relies on ZMQPP (c++ wrapper around ZeroMQ).
+ *  sudo apt install libzmqpp-dev
+ * 
+ * Core Idea: It would create the receving thread for each receiving ROS topic
+ *  and send ROS messages in each sub_cb() callback.
+ * 
+ * @version 1.0
+ * @date 2023-01-01
+ * 
+ * @license BSD 3-Clause License
+ * @copyright (c) 2023, Peixuan Shu
+ * All rights reserved.
+ * 
+ */
+
 #include "bridge_node.hpp"
 
-// using namespace std;
 
 /* uniform callback functions for ROS subscribers */
 template <typename T, int i>

@@ -1,3 +1,20 @@
+/**
+ * @file bridge_node.hpp
+ * @author Peixuan Shu (shupeixuan@qq.com)
+ * @brief Header file of bridge_node.cpp
+ * 
+ * Note: This program relies on ZMQPP (c++ wrapper around ZeroMQ).
+ *  sudo apt install libzmqpp-dev
+ * 
+ * @version 1.0
+ * @date 2023-01-01
+ * 
+ * @license BSD 3-Clause License
+ * @copyright (c) 2023, Peixuan Shu
+ * All rights reserved.
+ * 
+ */
+
 #ifndef __BRIDGE_NODE__
 #define __BRIDGE_NODE__
 #include <ros/ros.h>
