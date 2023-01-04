@@ -28,7 +28,7 @@ void sub_cb(const T &msg)
   send_array.add_raw(reinterpret_cast<void const *>(send_buffer.get()), data_len);
   // std::cout << "ready send!" << std::endl;
   // send(&, true) for non-blocking, send(&, false) for blocking
-  bool dont_block = false;
+  bool dont_block = false; // Actually for PUB mode zmq socket, send() will never block
   senders[i]->send(send_array, dont_block);
   // std::cout << "send!" << std::endl;
 
