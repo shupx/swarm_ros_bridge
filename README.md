@@ -100,7 +100,7 @@ find_package(catkin REQUIRED COMPONENTS
   sensor_msgs
   xxx_msgs
 )
-``` 
+```
 
 3. recompile:
 
@@ -111,7 +111,7 @@ catkin_make
 
 ### - More send_topics
 
-We support up to 50 send_topics. Modify the following lines in `src/swarm_ros_bridge/include/ros_sub_pub.hpp` if you need more:
+We support up to 50 send_topics. Modify the following lines in `src/swarm_ros_bridge/include/ros_sub_pub.hpp` if you need more.
 
 ```cpp
 // in ros_sub_pub.hpp
@@ -125,6 +125,12 @@ void (*sub_callbacks[])(const T &)=
 
 ```
 
+Then recompile:
+
+```bash
+cd swarm_ros_bridge
+catkin_make
+```
 
 ## Future Work
 
