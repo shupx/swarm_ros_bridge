@@ -2,13 +2,13 @@
 
 ## Introduction
 
-A lightweight middle interface that enables specified ROS messages transmission among swarm robots through socket communication.
+A lightweight middle interface ROS package that enables the specified ROS messages transmission among swarm robots through socket communication.
 
 Compared with ROS1 multi-robot wireless communication, it has the following benefits:
 
 -  **Robust** : No need for basestation ROS master launching first. Support each robot launching in a random sequence and connecting each other autonomously.
 
--  **Flexibility** :  You can choose the sending/receiving ROS topics rather than transferring all topics as ROS1 does.
+-  **Flexible** :  You can choose the sending/receiving ROS topics rather than transferring all topics as ROS1 does.
 
 -  **Easy to use** :  Specify all the IP and ROS topics in one configuration file.
 
@@ -16,13 +16,12 @@ Compared with ROS2 DDS communication, it has the following benefits:
 
 -  **Lightweight** : It is a small ROS bridge node subscribing and sending remote ROS topic, so it is easy to connect with other ROS1 nodes.
 
--  **Reliability** : It use zmq socket communication based on TCP protocol while ROS2 is based on DDS, whose default protocol is UDP (unrealiable). DDS is mainly designed for data exchange between native processes under wired communication rather than remote wireless communication.
+-  **Reliable** : It use zmq socket communication based on TCP protocol while ROS2 is based on DDS, whose default protocol is UDP (unrealiable). DDS is mainly designed for data exchange between native processes under wired communication rather than remote wireless communication.
 
 
 ## Framework
 
 ```bash
-Under src/:
 └── swarm_ros_bridge
     ├── CMakeLists.txt
     ├── config
@@ -45,8 +44,9 @@ Under src/:
 
 ```bash
 sudo apt install libzmqpp-dev
+mkdir -p /swarm_ros_bridge_ws/src  # or your own ros workspace
 git clone https://gitee.com/shu-peixuan/swarm_ros_bridge.git
-cd swarm_ros_bridge
+cd ../
 catkin_make
 source devel/setup.bash
 ```
