@@ -6,17 +6,17 @@ A lightweight middle interface ROS package that enables the specified ROS messag
 
 Compared with ROS1 multi-robot wireless communication, it has the following benefits:
 
--  **Robust** : No need for basestation ROS master launching first. Support each robot launching in a random sequence and connecting each other autonomously.
+-  **Robust**: No need for base station ROS master launching first. Support each robot launching in a random sequence and connecting each other autonomously.
 
--  **Flexible** :  You can choose the sending/receiving ROS topics rather than transferring all topics as ROS1 does.
+-  **Flexible**:  You can choose the sending/receiving ROS topics rather than transferring all topics as ROS1 does.
 
--  **Easy to use** :  Specify all the IP and ROS topics in one configuration file.
+-  **Easy to use**:  Specify all the IP and ROS topics in one configuration file.
 
 Compared with ROS2 DDS communication, it has the following benefits:
 
--  **Lightweight** : It is a small ROS bridge node subscribing and sending remote ROS topic, so it is easy to connect with other ROS1 nodes.
+-  **Lightweight**: It is a small ROS bridge node subscribing and sending remote ROS topics, so connecting with other ROS1 nodes is easy.
 
--  **Reliable** : It use zmq socket communication based on TCP protocol while ROS2 is based on DDS, whose default protocol is UDP (unrealiable). DDS is mainly designed for data exchange between native processes under wired communication rather than remote wireless communication.
+-  **Reliable**: It uses ZeroMQ socket communication based on TCP protocol while ROS2 is based on DDS, whose default protocol is UDP (unreliable). DDS is mainly designed for data exchange between native processes under wired communication rather than remote wireless communication.
 
 
 ## Framework
@@ -134,7 +134,7 @@ catkin_make
 
 ## Future Work
 
-1.  Dynamic RPC, including dynamic node discovery, online topic change and ground station monitor.
+1.  Dynamic RPC, including dynamic node discovery, online topic change, and ground station monitor.
 2.  Support UDP protocol for mass data transmission like video streams. 
 
 
