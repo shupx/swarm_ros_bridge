@@ -62,10 +62,10 @@ source devel/setup.bash
 
 ## Usage
 
-1. Specify the IP and ROS topic information in `src/swarm_ros_bridge/config/ros_topics.yaml`. 
+1. Specify the IP and ROS topic information in `config/ros_topics.yaml`. 
 
-- For sending topics, IP is self IP (* for example) and port should be different as it binds to the "tcp://*:port". 
-- For receiving topics, IP and port should be the remote source IP and port as it connects to the "tcp://srcIP:srcPort".
+- For the sending topic, IP is self IP (* for example) and port should be different as it binds to the "tcp://*:port". 
+- For the receiving topic, IP and port should be the remote source IP and port as it connects to the "tcp://srcIP:srcPort".
 
 (The `max_freq` only guarantees the sending frequency is lower than that but not be that. If the send_topics frequency is larger than max_freq, the node will decrease it by 2x, 3x, ... until it satisfies the max_freq.)
 
@@ -84,7 +84,7 @@ roslaunch swarm_ros_bridge test.launch
 
 The default supported ROS message types are only `sensor_msgs/Imu` and `geometry_msgs/Twist`. If you need more types:
 
-1. Modify the macros about MSG_TYPEx and MSG_CLASSx in `src/swarm_ros_bridge/include/ros_sub_pub.hpp`, then it will generate template functions for different ros message types.  
+1. Modify the macros about MSG_TYPEx and MSG_CLASSx in `include/ros_sub_pub.hpp`, then it will generate template functions for different ros message types.  
 
 ```cpp
 // In ros_sub_pub.hpp
@@ -94,7 +94,7 @@ The default supported ROS message types are only `sensor_msgs/Imu` and `geometry
 #define MSG_CLASS3 xxx_msgs::yy
 ```
 
-We support up to 10 types modification. If that is still not enough, then you should modify the `topic_subscriber()`, `topic_publisher()` and `deserialize_publish()` in `src/swarm_ros_bridge/include/ros_sub_pub.hpp` according to their styles.
+We support up to 10 types modification. If that is still not enough, then you should modify the `topic_subscriber()`, `topic_publisher()` and `deserialize_publish()` in `include/ros_sub_pub.hpp` according to their styles.
 
 2. Add the dependent package in find_package() of `src/swarm_ros_bridge/CMakeLists.txt`:
 
@@ -118,7 +118,7 @@ catkin_make
 
 ### * More send_topics
 
-We support up to 50 send_topics. Modify the following lines in `src/swarm_ros_bridge/include/ros_sub_pub.hpp` if you need more.
+We support up to 50 send_topics. Modify the following lines in `include/ros_sub_pub.hpp` if you need more.
 
 ```cpp
 // in ros_sub_pub.hpp
