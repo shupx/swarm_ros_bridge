@@ -4,6 +4,8 @@
 
 A lightweight middle interface ROS package that enables the specified ROS messages transmission among swarm robots through socket communication.
 
+![framework](pictures/swarm_ros_bridge_framework.png)
+
 Compared with ROS1 multi-robot wireless communication, it has the following benefits:
 
 -  **Robust**: No need for base station ROS master launching first. Support each robot launching in a random sequence and connecting each other autonomously.
