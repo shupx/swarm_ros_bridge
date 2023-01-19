@@ -43,9 +43,16 @@ Compared with ROS2 DDS communication, it has the following benefits:
 ## Install
 
 ```bash
-sudo apt install libzmqpp-dev
-mkdir -p /swarm_ros_bridge_ws/src  # or your own ros workspace
+## clone this package
+mkdir -p swarm_ros_bridge_ws/src  # or your own ros workspace
+cd swarm_ros_bridge_ws/src
 git clone https://gitee.com/shu-peixuan/swarm_ros_bridge.git
+
+## install dependencies
+sudo apt install libzmqpp-dev
+# or 'rosdep install --from-path swarm_ros_bridge/'
+
+## build
 cd ../
 catkin_make
 source devel/setup.bash
@@ -105,7 +112,7 @@ find_package(catkin REQUIRED COMPONENTS
 3. recompile:
 
 ```bash
-cd swarm_ros_bridge
+cd swarm_ros_bridge_ws/
 catkin_make
 ```
 
@@ -128,7 +135,7 @@ void (*sub_callbacks[])(const T &)=
 Then recompile:
 
 ```bash
-cd swarm_ros_bridge
+cd swarm_ros_bridge_ws/
 catkin_make
 ```
 
