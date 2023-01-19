@@ -19,7 +19,7 @@ Compared with ROS2 DDS communication, it has the following benefits:
 -  **Reliable**: It uses ZeroMQ socket communication based on TCP protocol while ROS2 is based on DDS, whose default protocol is UDP (unreliable). DDS is mainly designed for data exchange between native processes under wired communication rather than remote wireless communication.
 
 
-## Framework
+## Structure
 
 ```bash
 └── swarm_ros_bridge
@@ -47,6 +47,7 @@ Compared with ROS2 DDS communication, it has the following benefits:
 mkdir -p swarm_ros_bridge_ws/src  # or your own ros workspace
 cd swarm_ros_bridge_ws/src
 git clone https://gitee.com/shu-peixuan/swarm_ros_bridge.git
+# or 'git clone https://github.com/shupx/swarm_ros_bridge.git'
 
 ## install dependencies
 sudo apt install libzmqpp-dev
@@ -66,7 +67,7 @@ source devel/setup.bash
 - For sending topics, IP is self IP (* for example) and port should be different as it binds to the "tcp://*:port". 
 - For receiving topics, IP and port should be the remote source IP and port as it connects to the "tcp://srcIP:srcPort".
 
-The `max_freq` only guarantees the sending frequency is lower than that but not be that. If the send_topics frequency is larger than max_freq, the node will decrease it by 2x, 3x, ... until it satisfies the max_freq.
+(The `max_freq` only guarantees the sending frequency is lower than that but not be that. If the send_topics frequency is larger than max_freq, the node will decrease it by 2x, 3x, ... until it satisfies the max_freq.)
 
 2. Launch the bridge_node:
 
@@ -74,14 +75,14 @@ The `max_freq` only guarantees the sending frequency is lower than that but not 
 roslaunch swarm_ros_bridge test.launch
 ```
 
-Publish messages into send_topics and check remote recv_topics have received messages. The console will also print INFO if recv_topics have received topics.
+3. Publish messages into send_topics and check that remote recv_topics are receiving these messages. The console will also print INFO the first time recv_topics receive messages.
 
 
 ## Advanced
 
-### - More ROS message types
+### * More ROS message types
 
-The default supporting ROS message types are only `sensor_msgs/Imu` and `geometry_msgs/Twist`. If you need more types:
+The default supported ROS message types are only `sensor_msgs/Imu` and `geometry_msgs/Twist`. If you need more types:
 
 1. Modify the macros about MSG_TYPEx and MSG_CLASSx in `src/swarm_ros_bridge/include/ros_sub_pub.hpp`, then it will generate template functions for different ros message types.  
 
@@ -93,7 +94,7 @@ The default supporting ROS message types are only `sensor_msgs/Imu` and `geometr
 #define MSG_CLASS3 xxx_msgs::yy
 ```
 
-We support maximum 10 types. If that is not enough, then you should modify the `topic_subscriber()`, `topic_publisher()` and `deserialize_publish()` in `src/swarm_ros_bridge/include/ros_sub_pub.hpp` according to their styles.
+We support up to 10 types modification. If that is still not enough, then you should modify the `topic_subscriber()`, `topic_publisher()` and `deserialize_publish()` in `src/swarm_ros_bridge/include/ros_sub_pub.hpp` according to their styles.
 
 2. Add the dependent package in find_package() of `src/swarm_ros_bridge/CMakeLists.txt`:
 
@@ -101,7 +102,6 @@ We support maximum 10 types. If that is not enough, then you should modify the `
 # in CMakeLists.txt
 find_package(catkin REQUIRED COMPONENTS
   roscpp
-  rospy
   std_msgs
   geometry_msgs
   sensor_msgs
@@ -116,7 +116,7 @@ cd swarm_ros_bridge_ws/
 catkin_make
 ```
 
-### - More send_topics
+### * More send_topics
 
 We support up to 50 send_topics. Modify the following lines in `src/swarm_ros_bridge/include/ros_sub_pub.hpp` if you need more.
 
