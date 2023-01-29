@@ -2,7 +2,9 @@
 
 ## Introduction
 
-A lightweight middle interface ROS package that enables the specified ROS messages transmission among swarm robots through socket communication.
+A lightweight middle interface ROS package mainly based on [ZeroMQ](https://zeromq.org). It enables the specified ROS messages transmission among swarm robots through socket communication. The purpose of this package is to replace the traditional way of [running ROS across multiple machines in ROS1](https://wiki.ros.org/ROS/Tutorials/MultipleMachines), which has some drawbacks under swarm robots situation.
+
+A example of two ROS robots communicating with each other through swarm_ros_bridge is shown below:
 
 ![framework](pictures/swarm_ros_bridge_framework.png)
 
@@ -14,11 +16,16 @@ Compared with ROS1 multi-robot wireless communication, it has the following bene
 
 -  **Easy to use**:  Specify all the IP and ROS topics in one configuration file.
 
-Compared with ROS2 DDS communication, it has the following benefits:
+Compared with ROS2 DDS communication, it may have the following benefits:
 
 -  **Lightweight**: It is a small ROS bridge node subscribing and sending remote ROS topics, so connecting with other ROS nodes is easy.
-
 -  **Reliable**: It uses ZeroMQ socket communication based on TCP protocol while ROS2 is based on DDS, whose default protocol is UDP (unreliable). DDS is mainly designed for data exchange between native processes under wired communication rather than remote wireless communication.
+
+ROS wiki page: https://wiki.ros.org/swarm_ros_bridge
+
+source code: https://github.com/shupx/swarm_ros_bridge.git
+
+csdn blog (in chinese): https://blog.csdn.net/benchuspx/article/details/128576723
 
 
 ## Structure
@@ -121,7 +128,7 @@ find_package(catkin REQUIRED COMPONENTS
 )
 ```
 
-3. recompile:
+3. Recompile:
 
 ```bash
 cd swarm_ros_bridge_ws/
@@ -162,5 +169,7 @@ catkin_make
 ## Contributor
 
 Peixuan Shu (shupeixuan@qq.com), PhD, beihang university, China, 2023.1.1
+
+This package is personally developed by Peixuan Shu (PhD, beihang  university, China) on Jan. 2023. Any question/suggestion is welcomed at [swarm_ros_bridge issue](https://github.com/shupx/swarm_ros_bridge/issues) or [shupeixuan@qq.com](mailto:shupeixuan@qq.com). 
 
 ![img1](pictures/img1.png)
