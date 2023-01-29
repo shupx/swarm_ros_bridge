@@ -7,6 +7,8 @@
   <maintainer email="shupeixuan@qq.com">shupeixuan</maintainer>
 
   <license>BSD-3-Clause</license>
+  
+  <url>https://wiki.ros.org/swarm_ros_bridge</url>
 
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>roscpp</build_depend>
