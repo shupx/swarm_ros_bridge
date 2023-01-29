@@ -16,7 +16,7 @@ Compared with ROS1 multi-robot wireless communication, it has the following bene
 
 Compared with ROS2 DDS communication, it has the following benefits:
 
--  **Lightweight**: It is a small ROS bridge node subscribing and sending remote ROS topics, so connecting with other ROS1 nodes is easy.
+-  **Lightweight**: It is a small ROS bridge node subscribing and sending remote ROS topics, so connecting with other ROS nodes is easy.
 
 -  **Reliable**: It uses ZeroMQ socket communication based on TCP protocol while ROS2 is based on DDS, whose default protocol is UDP (unreliable). DDS is mainly designed for data exchange between native processes under wired communication rather than remote wireless communication.
 
@@ -43,6 +43,16 @@ Compared with ROS2 DDS communication, it has the following benefits:
 
 
 ## Install
+
+**Supported platforms/releases**:
+
+| Platform                                                   | ROS Release                                                    |
+| ---------------------------------------------------------- | -------------------------------------------------------------- |
+| [Ubuntu 16.04 Xenial](https://releases.ubuntu.com/16.04.4/) | [ROS Kinetic](https://wiki.ros.org/kinetic/Installation/Ubuntu) |
+| [Ubuntu 18.04 Bionic](https://releases.ubuntu.com/18.04/) | [ROS Melodic](https://wiki.ros.org/melodic/Installation/Ubuntu) |
+| [Ubuntu 20.04 Focal](https://releases.ubuntu.com/20.04/) | [ROS Noetic](https://wiki.ros.org/noetic/Installation/Ubuntu) |
+
+**Install process**:
 
 ```bash
 ## clone this package
@@ -129,7 +139,7 @@ We support up to 50 send_topics. Modify the following lines in `include/ros_sub_
 template <typename T>
 void (*sub_callbacks[])(const T &)=
 {
-  sub_cb<T,0>, sub_cb<T,1>, ...
+  sub_cb<T,0>, sub_cb<T,1>, ... //add more
 };
 
 ```
@@ -145,10 +155,12 @@ catkin_make
 
 1.  Dynamic RPC, including dynamic node discovery, online topic change, and ground station monitor.
 2.  Support UDP protocol for mass data transmission like video streams. 
+3.  Support ROS service transmission with ZeroMQ request-reply mode.
+4.  Support ROS2 topic and service transmission.
 
 
 ## Contributor
 
-Shu Peixuan (shupeixuan@qq.com) 2023.1.1
+Peixuan Shu (shupeixuan@qq.com), PhD, beihang university, China, 2023.1.1
 
 ![img1](pictures/img1.png)
