@@ -108,7 +108,7 @@ The default supported ROS message types are only `sensor_msgs/Imu` and `geometry
 
 We support up to 10 types modification. If that is still not enough, then you should modify the `topic_subscriber()`, `topic_publisher()` and `deserialize_publish()` in `include/ros_sub_pub.hpp` according to their styles.
 
-2. Add the dependent package in find_package() of `src/swarm_ros_bridge/CMakeLists.txt`:
+2. Add the dependent package in find_package() of `CMakeLists.txt`:
 
 ```sh
 # in CMakeLists.txt
