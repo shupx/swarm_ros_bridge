@@ -12,7 +12,7 @@ Compared with ROS1 multi-robot wireless communication, it has the following bene
 
 -  **Robust**: No need for base station ROS master launching first. Support each robot launching in a random sequence and connecting each other autonomously.
 
--  **Flexible**:  You can choose the sending/receiving ROS topics rather than transferring all topics as ROS1 does.
+-  **Flexible**:  You can choose the sending/receiving ROS topics rather than transferring all topic (names) as ROS1 does.
 
 -  **Easy to use**:  Specify all the IP and ROS topics in one configuration file.
 
