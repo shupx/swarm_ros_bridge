@@ -4,7 +4,7 @@
 
 A lightweight middle interface ROS package mainly based on [ZeroMQ](https://zeromq.org). It enables the specified ROS messages transmission among swarm robots through socket communication. The purpose of this package is to replace the traditional way of [running ROS across multiple machines in ROS1](https://wiki.ros.org/ROS/Tutorials/MultipleMachines), which has some drawbacks under swarm robots situation.
 
-A example of two ROS robots communicating with each other through swarm_ros_bridge is shown below:
+An example of two ROS robots communicating with each other through swarm_ros_bridge is shown below:
 
 ![framework](pictures/swarm_ros_bridge_framework.png)
 
