@@ -172,4 +172,8 @@ Peixuan Shu (shupeixuan@qq.com), PhD, beihang university, China, 2023.1.1
 
 This package is personally developed by Peixuan Shu (PhD, beihang  university, China) on Jan. 2023. Any question/suggestion is welcomed at [swarm_ros_bridge issue](https://github.com/shupx/swarm_ros_bridge/issues) or [shupeixuan@qq.com](mailto:shupeixuan@qq.com). 
 
+Some applications:
+
+ **pyugvswarm** : a python package wrapper around unmanned ground vehicle (UGV) swarm positioning / communication / control ROS1 nodes. https://pyugvswarm.readthedocs.io/en/latest/overview.html
+
 ![img1](pictures/img1.png)
