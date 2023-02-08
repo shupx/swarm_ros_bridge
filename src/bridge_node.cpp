@@ -221,7 +221,7 @@ int main(int argc, char **argv)
     int srcPort = recv_topic_xml["srcPort"];
     TopicInfo topic = {.name=topic_name, .type=msg_type, .max_freq=max_freq, .ip=srcIP, .port=srcPort};
     recvTopics.emplace_back(topic);
-    std::cout << topic.name << std::endl;
+    std::cout << topic.name << "  (from " << recv_topic_xml["srcIP"]  << ")" << std::endl;
   }
 
   // ********************* zmq socket initialize ***************************
