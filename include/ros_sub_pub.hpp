@@ -31,6 +31,18 @@
 #define MSG_TYPE2 "geometry_msgs/Twist"
 #define MSG_CLASS2 geometry_msgs::Twist
 
+#include <sensor_msgs/NavSatFix.h>
+#define MSG_TYPE3 "sensor_msgs/NavSatFix"
+#define MSG_CLASS3 sensor_msgs::NavSatFix
+
+#include <geometry_msgs/Vector3.h>
+#define MSG_TYPE4 "geometry_msgs/Vector3"
+#define MSG_CLASS4 geometry_msgs::Vector3
+
+#include <std_msgs/Int32.h>
+#define MSG_TYPE5 "std_msgs/Int32"
+#define MSG_CLASS5 std_msgs::Int32
+
 // #include <xxx/yy.h>
 // #define MSG_TYPE3 "xxx/yy"
 // #define MSG_CLASS3 xxx::yy

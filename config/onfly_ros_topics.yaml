@@ -1,0 +1,63 @@
+### supported ROS message types(modify or add in ros_sub_pub.hpp):
+# sensor_msgs/Imu
+# geometry_msgs/Twist
+### max support send topics number: 50
+
+### list the IP of self and neighbors here (names can be random) ###
+IP:
+  self: '*'   # '*' stands for all self IPs
+  uav0: 192.168.1.11
+  uav1: 192.168.1.14
+
+####### Send these ROS messages to remote robots #######
+send_topics:
+- topic_name: /init_nav # send the messages of this ROS topic
+  msg_type: sensor_msgs/NavSatFix # ROS message type (rosmsg style)
+  max_freq: 100 # max send frequency (Hz) int
+  srcIP: self # self IP
+  srcPort: 3201 # the port of each send_topic should be different
+
+- topic_name: /nav # send the messages of this ROS topic
+  msg_type: sensor_msgs/NavSatFix # ROS message type (rosmsg style)
+  max_freq: 100 # max send frequency (Hz) int
+  srcIP: self # self IP
+  srcPort: 3202 # the port of each send_topic should be different
+
+- topic_name: /vel # send the messages of this ROS topic
+  msg_type: geometry_msgs/Twist # ROS message type (rosmsg style)
+  max_freq: 100 # max send frequency (Hz) int
+  srcIP: self # self IP
+  srcPort: 3203 # the port of each send_topic should be different
+
+- topic_name: /angle # send the messages of this ROS topic
+  msg_type: geometry_msgs/Vector3 # ROS message type (rosmsg style)
+  max_freq: 100 # max send frequency (Hz) int
+  srcIP: self # self IP
+  srcPort: 3204 # the port of each send_topic should be different
+
+####### receive these ROS messages from remote robots #######
+recv_topics:
+- topic_name: /uav1/angle # the received messages will be published in this topic name
+  msg_type: geometry_msgs/Vector3 # ROS message type (rosmsg style)
+  srcIP: uav0 # message source IP
+  srcPort: 3004 # message source port
+
+- topic_name: /uav2/angle # the received messages will be published in this topic name
+  msg_type: geometry_msgs/Vector3 # ROS message type (rosmsg style)
+  srcIP: uav1 # message source IP
+  srcPort: 3104 # message source port
+
+- topic_name: /uav1/nav # the received messages will be published in this topic name
+  msg_type: sensor_msgs/NavSatFix # ROS message type (rosmsg style)
+  srcIP: uav0 # message source IP
+  srcPort: 3002 # message source port
+
+- topic_name: /uav2/nav # the received messages will be published in this topic name
+  msg_type: sensor_msgs/NavSatFix # ROS message type (rosmsg style)
+  srcIP: uav1 # message source IP
+  srcPort: 3102 # message source port
+
+- topic_name: /command # the received messages will be published in this topic name
+  msg_type: std_msgs/Int32 # ROS message type (rosmsg style)
+  srcIP: uav0 # message source IP
+  srcPort: 3005 # message source port
