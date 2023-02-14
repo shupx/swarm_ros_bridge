@@ -86,7 +86,7 @@ source devel/setup.bash
 - For the sending topic, IP is self IP (* for example) and port should be different as it binds to the "tcp://*:port". 
 - For the receiving topic, IP and port should be the remote source IP and port as it connects to the "tcp://srcIP:srcPort".
 
-(The `max_freq` only guarantees the sending frequency is lower than that but not be that. If the send_topics frequency is larger than max_freq, the node will decrease it by 2x, 3x, ... until it satisfies the max_freq. check [github issue #2](https://github.com/shupx/swarm_ros_bridge/issues/2))
+- The `max_freq` will limit the sending frequency once it exceeds `max_freq`. Set `max_freq` large enough if you do not want to decrease the sending frequency.
 
 2. Launch the bridge_node:
 
