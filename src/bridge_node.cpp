@@ -23,16 +23,52 @@
 
 #include "bridge_node.hpp"
 
+// /* send messages frequency control */
+// // this is the original freq control func that has been deprecated
+// bool send_freq_control(int i)
+// {
+//   ros::Time t_now = ros::Time::now(); 
+//   bool discard_flag;
+//   if ((t_now - sub_t_last[i]).toSec() * sendTopics[i].max_freq < 1.0) {
+//     discard_flag = true;
+//   }
+//   else {
+//     discard_flag = false;
+//     sub_t_last[i] = t_now; 
+//   }
+//   return discard_flag; // flag of discarding this message
+// }
+
+/* send messages frequency control */
+bool send_freq_control(int i)
+{
+  bool discard_flag;
+  ros::Time t_now = ros::Time::now(); 
+  // check whether the send of this message will exceed the freq limit in the last period
+  if ((send_num[i] + 1) / (t_now - sub_t_last[i]).toSec() > sendTopics[i].max_freq) {
+    discard_flag = true;
+  }
+  else {
+    discard_flag = false;
+    send_num[i] ++;
+  }
+  // freq control period (1s)
+  if ((t_now - sub_t_last[i]).toSec() > 1.0){
+    sub_t_last[i] = t_now;
+    send_num[i] = 0;
+  }
+  return discard_flag; // flag of discarding this message
+}
 
 /* uniform callback functions for ROS subscribers */
 template <typename T, int i>
 void sub_cb(const T &msg)
 {
   /* frequency control */
-  ros::Time t_now = ros::Time::now();
-  if ((t_now - sub_t_last[i]).toSec() * sendTopics[i].max_freq < 1.0)
-    {return;}
-  sub_t_last[i] = t_now;
+  auto ignore_flag = send_freq_control(i);
+  if (ignore_flag){
+    return; // discard this message sending, abort
+  }
 
   /* serialize the sending messages into send_buffer */
   namespace ser = ros::serialization;
@@ -250,7 +286,8 @@ int main(int argc, char **argv)
   //ROS topic subsrcibe and send
   for (int32_t i=0; i < len_send; ++i)
   {
-    sub_t_last.emplace_back(ros::Time::now()); // sub_cb called last time
+    sub_t_last.emplace_back(ros::Time::now()); // freq control period start time
+    send_num.emplace_back(0); // the send messages number in a period
     ros::Subscriber subscriber;
     // The uniform callback function is sub_cb()
     subscriber = topic_subscriber(sendTopics[i].name, sendTopics[i].type, nh, i);
