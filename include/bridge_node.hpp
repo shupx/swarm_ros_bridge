@@ -61,9 +61,13 @@ std::vector<std::unique_ptr<zmqpp::socket>> senders;   //index senders
 std::vector<std::unique_ptr<zmqpp::socket>> receivers; //index receivers
 
 // ******************* ROS subscribe and publish *************************
-std::vector<ros::Time> sub_t_last;
 std::vector<ros::Subscriber> topic_subs;
 std::vector<ros::Publisher> topic_pubs;
+
+// ******************* send frequency control ***************************
+std::vector<ros::Time> sub_t_last;
+std::vector<int> send_num;
+bool send_freq_control(int i);
 
 // ****************** launch receive threads *****************************
 std::vector<bool> recv_thread_flags;
