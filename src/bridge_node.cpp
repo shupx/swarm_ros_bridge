@@ -147,8 +147,14 @@ void recv_func(int i)
     else
     {
       /* check and report receive state */
-      if (recv_flag != recv_flags_last[i]) // false -> true(first message in)
-        ROS_INFO("[bridge node] \"%s\" received!", recvTopics[i].name.c_str());
+      if (recv_flag != recv_flags_last[i]){
+        std::string topicName = recvTopics[i].name;
+        if (topicName.at(0) != '/') {
+          if (ns == "/") {topicName = "/" + topicName;}
+          else {topicName = ns + "/" + topicName;}
+        }  // print namespace prefix if topic name is not global
+        ROS_INFO("[bridge node] \"%s\" received!", topicName.c_str());
+      } // false -> true(first message in)        
       recv_flags_last[i] = recv_flag;
     }
   }
@@ -178,6 +184,11 @@ int main(int argc, char **argv)
 {
   ros::init(argc, argv, "swarm_bridge");
   ros::NodeHandle nh("~");
+  ros::NodeHandle nh_public;
+  ns = ros::this_node::getNamespace(); // namespace of this node
+
+  std::cout << "--------[bridge_node]-------" << std::endl;
+  std::cout << "namespaces=" << ns << std::endl;
 
   //************************ Parse configuration file **************************
   // get hostnames and IPs
@@ -242,6 +253,10 @@ int main(int argc, char **argv)
       return 3;
     }
     srcPorts.insert(srcPort); // for duplicate check 
+    if (topic.name.at(0) != '/') {
+      std::cout << ns;
+      if (ns != "/") {std::cout << "/";}
+    }  // print namespace prefix if topic.name is not global
     std::cout << topic.name << "  " << topic.max_freq << "Hz(max)" << std::endl;
   }
 
@@ -257,6 +272,10 @@ int main(int argc, char **argv)
     int srcPort = recv_topic_xml["srcPort"];
     TopicInfo topic = {.name=topic_name, .type=msg_type, .max_freq=max_freq, .ip=srcIP, .port=srcPort};
     recvTopics.emplace_back(topic);
+    if (topic.name.at(0) != '/') {
+      std::cout << ns;
+      if (ns != "/") {std::cout << "/";}
+    }  // print namespace prefix if topic.name is not global
     std::cout << topic.name << "  (from " << recv_topic_xml["srcIP"]  << ")" << std::endl;
   }
 
@@ -290,7 +309,7 @@ int main(int argc, char **argv)
     send_num.emplace_back(0); // the send messages number in a period
     ros::Subscriber subscriber;
     // The uniform callback function is sub_cb()
-    subscriber = topic_subscriber(sendTopics[i].name, sendTopics[i].type, nh, i);
+    subscriber = topic_subscriber(sendTopics[i].name, sendTopics[i].type, nh_public, i);
     topic_subs.emplace_back(subscriber);
     // use topic_subs[i].shutdown() to unsubscribe
   }
@@ -299,7 +318,7 @@ int main(int argc, char **argv)
   for (int32_t i=0; i < len_recv; ++i) 
   {
     ros::Publisher publisher;
-    publisher = topic_publisher(recvTopics[i].name, recvTopics[i].type, nh);
+    publisher = topic_publisher(recvTopics[i].name, recvTopics[i].type, nh_public);
     topic_pubs.emplace_back(publisher);
   }
 
