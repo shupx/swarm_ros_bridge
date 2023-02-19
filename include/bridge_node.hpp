@@ -44,6 +44,7 @@ struct TopicInfo
 };
 
 //********************* Parse configuration file **************************
+std::string ns; // namespace of this node
 XmlRpc::XmlRpcValue ip_xml;
 XmlRpc::XmlRpcValue send_topics_xml;
 XmlRpc::XmlRpcValue recv_topics_xml;

@@ -91,17 +91,20 @@ source devel/setup.bash
 2. Launch the bridge_node:
 
 ```bash
-roslaunch swarm_ros_bridge test.launch
+roslaunch swarm_ros_bridge test.launch # local machine test
 ```
 
 3. Publish messages into send_topics and check that remote recv_topics are receiving these messages. The console will also print INFO the first time recv_topics receive messages.
+
+
+We also provide a simple latency test demo between two machines. Please refer to [scripts/README.md](https://github.com/shupx/swarm_ros_bridge/tree/master/scripts/README.md)
 
 
 ## Advanced
 
 ### * More ROS message types
 
-The default supported ROS message types are only `sensor_msgs/Imu` and `geometry_msgs/Twist`. If you need more types:
+The default supported ROS message types are only `sensor_msgs/Imu` , `geometry_msgs/Twist` and `std_msgs/String`. If you need more types:
 
 1. Modify the macros about MSG_TYPEx and MSG_CLASSx in `include/ros_sub_pub.hpp`, then it will generate template functions for different ros message types.  
 
@@ -109,8 +112,8 @@ The default supported ROS message types are only `sensor_msgs/Imu` and `geometry
 // In ros_sub_pub.hpp
 // uncomment and modify the following lines:
 #include <xxx_msgs/yy.h>
-#define MSG_TYPE3 "xxx_msgs/yy"
-#define MSG_CLASS3 xxx_msgs::yy
+#define MSG_TYPE4 "xxx_msgs/yy"
+#define MSG_CLASS4 xxx_msgs::yy
 ```
 
 We support up to 10 types modification. If that is still not enough, then you should modify the `topic_subscriber()`, `topic_publisher()` and `deserialize_publish()` in `include/ros_sub_pub.hpp` according to their styles.
