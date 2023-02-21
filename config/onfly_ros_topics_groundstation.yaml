@@ -1,0 +1,82 @@
+### supported ROS message types(modify or add in ros_sub_pub.hpp):
+# sensor_msgs/Imu
+# geometry_msgs/Twist
+### max support send topics number: 50
+
+### list the IP of self and neighbors here (names can be random) ###
+IP:
+  self: '*'   # '*' stands for all self IPs
+  uav0: 192.168.1.11
+  uav1: 192.168.1.14
+  uav2: 192.168.1.13
+  groundstation: 192.168.1.105
+
+####### Send these ROS messages to remote robots #######
+send_topics:
+- topic_name: /command # send the messages of this ROS topic
+  msg_type: std_msgs/Int32 # ROS message type (rosmsg style)
+  max_freq: 100 # max send frequency (Hz) int
+  srcIP: self # self IP
+  srcPort: 3305 # the port of each send_topic should be different
+
+####### receive these ROS messages from remote robots #######
+recv_topics:
+- topic_name: /uav0/vel # the received messages will be published in this topic name
+  msg_type: geometry_msgs/Twist # ROS message type (rosmsg style)
+  srcIP: uav0 # message source IP
+  srcPort: 3003 # message source port
+
+- topic_name: /uav1/vel # the received messages will be published in this topic name
+  msg_type: geometry_msgs/Twist # ROS message type (rosmsg style)
+  srcIP: uav1 # message source IP
+  srcPort: 3103 # message source port
+
+- topic_name: /uav2/vel # the received messages will be published in this topic name
+  msg_type: geometry_msgs/Twist # ROS message type (rosmsg style)
+  srcIP: uav2 # message source IP
+  srcPort: 3203 # message source port
+
+- topic_name: /uav0/angle # the received messages will be published in this topic name
+  msg_type: geometry_msgs/Vector3 # ROS message type (rosmsg style)
+  srcIP: uav0 # message source IP
+  srcPort: 3004 # message source port
+
+- topic_name: /uav1/angle # the received messages will be published in this topic name
+  msg_type: geometry_msgs/Vector3 # ROS message type (rosmsg style)
+  srcIP: uav1 # message source IP
+  srcPort: 3104 # message source port
+
+- topic_name: /uav2/angle # the received messages will be published in this topic name
+  msg_type: geometry_msgs/Vector3 # ROS message type (rosmsg style)
+  srcIP: uav2 # message source IP
+  srcPort: 3204 # message source port
+
+- topic_name: /uav0/command # the received messages will be published in this topic name
+  msg_type: std_msgs/Int32 # ROS message type (rosmsg style)
+  srcIP: uav0 # message source IP
+  srcPort: 3005 # message source port
+
+- topic_name: /uav1/command # the received messages will be published in this topic name
+  msg_type: std_msgs/Int32 # ROS message type (rosmsg style)
+  srcIP: uav1 # message source IP
+  srcPort: 3105 # message source port
+
+- topic_name: /uav2/command # the received messages will be published in this topic name
+  msg_type: std_msgs/Int32 # ROS message type (rosmsg style)
+  srcIP: uav2 # message source IP
+  srcPort: 3205 # message source port
+
+- topic_name: /uav0/pos # the received messages will be published in this topic name
+  msg_type: geometry_msgs/Vector3 # ROS message type (rosmsg style)
+  srcIP: uav0 # message source IP
+  srcPort: 3006 # message source port
+
+- topic_name: /uav1/pos # the received messages will be published in this topic name
+  msg_type: geometry_msgs/Vector3 # ROS message type (rosmsg style)
+  srcIP: uav1 # message source IP
+  srcPort: 3106 # message source port
+
+- topic_name: /uav2/pos # the received messages will be published in this topic name
+  msg_type: geometry_msgs/Vector3 # ROS message type (rosmsg style)
+  srcIP: uav2 # message source IP
+  srcPort: 3206 # message source port
