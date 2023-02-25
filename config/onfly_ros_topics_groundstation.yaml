@@ -81,17 +81,17 @@ recv_topics:
   srcIP: uav2 # message source IP
   srcPort: 3206 # message source port
 
-- topic_name: /uav0/stage # send the messages of this ROS topic
+- topic_name: /uav0/onboard_stage # send the messages of this ROS topic
   msg_type: std_msgs/Int32 # ROS message type (rosmsg style)
   srcIP: uav0 # message source IP
   srcPort: 3007 # message source port
 
-- topic_name: /uav1/stage # send the messages of this ROS topic
+- topic_name: /uav1/onboard_stage # send the messages of this ROS topic
   msg_type: std_msgs/Int32 # ROS message type (rosmsg style)
   srcIP: uav1 # message source IP
   srcPort: 3107 # message source port
 
-- topic_name: /uav2/stage # send the messages of this ROS topic
+- topic_name: /uav2/onboard_stage # send the messages of this ROS topic
   msg_type: std_msgs/Int32 # ROS message type (rosmsg style)
   srcIP: uav2 # message source IP
   srcPort: 3207 # message source port
