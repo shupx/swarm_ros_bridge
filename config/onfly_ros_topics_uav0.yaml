@@ -15,27 +15,33 @@ IP:
 send_topics:
 - topic_name: /vel # send the messages of this ROS topic
   msg_type: geometry_msgs/Twist # ROS message type (rosmsg style)
-  max_freq: 50 # max send frequency (Hz) int
+  max_freq: 30 # max send frequency (Hz) int
   srcIP: self # self IP
   srcPort: 3003 # the port of each send_topic should be different
 
 - topic_name: /angle # send the messages of this ROS topic
   msg_type: geometry_msgs/Vector3 # ROS message type (rosmsg style)
-  max_freq: 50 # max send frequency (Hz) int
+  max_freq: 30 # max send frequency (Hz) int
   srcIP: self # self IP
   srcPort: 3004 # the port of each send_topic should be different
 
 - topic_name: /command # send the messages of this ROS topic
   msg_type: std_msgs/Int32 # ROS message type (rosmsg style)
-  max_freq: 100 # max send frequency (Hz) int
+  max_freq: 50 # max send frequency (Hz) int
   srcIP: self # self IP
   srcPort: 3005 # the port of each send_topic should be different
 
 - topic_name: /pos # send the messages of this ROS topic
   msg_type: geometry_msgs/Vector3 # ROS message type (rosmsg style)
-  max_freq: 50 # max send frequency (Hz) int
+  max_freq: 30 # max send frequency (Hz) int
   srcIP: self # self IP
   srcPort: 3006 # the port of each send_topic should be different
+
+- topic_name: /onboard_stage # send the messages of this ROS topic
+  msg_type: std_msgs/Int32 # ROS message type (rosmsg style)
+  max_freq: 10 # max send frequency (Hz) int
+  srcIP: self # self IP
+  srcPort: 3007 # the port of each send_topic should be different
 
 ####### receive these ROS messages from remote robots #######
 recv_topics:
@@ -59,17 +65,7 @@ recv_topics:
   srcIP: uav2 # message source IP
   srcPort: 3206 # message source port
 
-- topic_name: /uav/command # the received messages will be published in this topic name
-  msg_type: std_msgs/Int32 # ROS message type (rosmsg style)
-  srcIP: uav1 # message source IP
-  srcPort: 3105 # message source port
-
-- topic_name: /uav/command # the received messages will be published in this topic name
-  msg_type: std_msgs/Int32 # ROS message type (rosmsg style)
-  srcIP: uav2 # message source IP
-  srcPort: 3205 # message source port
-
-- topic_name: /uav/command # the received messages will be published in this topic name
+- topic_name: /gs/command # the received messages will be published in this topic name
   msg_type: std_msgs/Int32 # ROS message type (rosmsg style)
   srcIP: groundstation # message source IP
   srcPort: 3305 # message source port
