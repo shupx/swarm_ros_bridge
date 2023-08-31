@@ -1,0 +1,17 @@
+IP:
+  self: '*'
+  server: 192.168.147.21
+  client: 192.168.2.15
+
+send_topics:
+- topic_name: /twtof/request
+  msg_type: std_msgs/Float32MultiArray
+  max_freq: 50
+  srcIP: self
+  srcPort: 3001
+
+recv_topics:
+- topic_name: /twtof/poll
+  msg_type: std_msgs/Float32MultiArray
+  srcIP: client
+  srcPort: 3002

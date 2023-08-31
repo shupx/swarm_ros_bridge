@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<launch>
+
+  <node pkg="swarm_ros_bridge" type="bridge_node" name="testdelayclient" output="screen">
+    <rosparam command="load" file="$(find swarm_ros_bridge)/config/TWTOFClient.yaml" />
+  </node>
+
+  <node pkg="swarm_ros_bridge" type="TWTOFClient.py" name="testNodeC" output="screen" />
+
+
+</launch>

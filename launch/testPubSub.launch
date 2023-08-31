@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="name" default="" />
+
+  <node pkg="swarm_ros_bridge" type="bridge_node" name="testPubSub" output="screen">
+    <rosparam command="load" file="$(find swarm_ros_bridge)/config/comm_$(arg name).yaml" />
+    <param name="vehicle_name" value="$(arg name)"/>
+  </node>
+
+  <node pkg="swarm_ros_bridge" type="testPubSub.py" name="testNode" output="screen" />
+
+  <node name="record" pkg="rosbag" type="record" output="screen" args="-a -o /home/$(env USER)/all_message.bag" />
+
+
+</launch>

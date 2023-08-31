@@ -243,6 +243,7 @@ int main(int argc, char **argv)
     std::string topic_name = send_topic_xml["topic_name"];
     std::string msg_type = send_topic_xml["msg_type"];
     int max_freq = send_topic_xml["max_freq"];
+    max_freq++;
     std::string srcIP = ip_map[send_topic_xml["srcIP"]];
     int srcPort = send_topic_xml["srcPort"];
     TopicInfo topic = {.name=topic_name, .type=msg_type, .max_freq=max_freq, .ip=srcIP, .port=srcPort};

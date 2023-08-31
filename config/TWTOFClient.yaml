@@ -1,0 +1,18 @@
+IP:
+  self: '*'
+  server: 192.168.147.21
+  client: 192.168.147.11
+  local: 127.0.0.1 # just for local machine test
+
+send_topics:
+- topic_name: /twtof/poll
+  msg_type: std_msgs/Float32MultiArray
+  max_freq: 50
+  srcIP: self
+  srcPort: 3002
+
+recv_topics:
+- topic_name: /twtof/request
+  msg_type: std_msgs/Float32MultiArray
+  srcIP: server
+  srcPort: 3001

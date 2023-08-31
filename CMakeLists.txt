@@ -8,6 +8,7 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   geometry_msgs
   sensor_msgs
+  rospy
 )
 
 catkin_package(
@@ -19,10 +20,18 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
-add_executable(bridge_node src/bridge_node.cpp)
+FILE(GLOB SRCS src/*.cpp)
 
-target_link_libraries(bridge_node
+foreach(src ${SRCS})
+  
+get_filename_component(name ${src} NAME_WE)
+add_executable(${name} ${src})
+
+target_link_libraries(${name}
    ${catkin_LIBRARIES}
    zmq
    zmqpp
 )
+
+endforeach(src ${SRCS})
+
