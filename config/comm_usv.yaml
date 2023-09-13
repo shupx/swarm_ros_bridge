@@ -13,7 +13,7 @@ IP:
 ####### Send these ROS messages to remote robots #######
 ## if no send_topics needed, comment all these out
 send_topics:
-- topic_name: /usv_localization_imu
+- topic_name: /mavros/imu/data
   msg_type: sensor_msgs/Imu
   max_freq: 200
   srcIP: self

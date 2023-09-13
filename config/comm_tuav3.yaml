@@ -31,7 +31,7 @@ recv_topics:
   srcIP: tuav1
   srcPort: 3102
 
-- topic_name: /usv_localization_imu
+- topic_name: /mavros/imu/data
   msg_type: sensor_msgs/Imu
   srcIP: usv
   srcPort: 1101
