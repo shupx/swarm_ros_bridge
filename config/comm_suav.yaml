@@ -3,9 +3,9 @@
 ### list all <IPname: IP> here (IPname can be set arbitrarily) ###
 IP:
   self: '*'   # '*' stands for all self IPs
-  usv:   192.168.147.11
+  usv:   192.168.147.211
   suav:  192.168.147.21
-  tuav1: 192.168.147.31
+  tuav1: 192.168.147.120
   tuav2: 192.168.147.41
   tuav3: 192.168.147.51
   local: 127.0.0.1 # just for local machine test
@@ -14,8 +14,7 @@ IP:
 ## if no send_topics needed, comment all these out
 send_topics:
 - topic_name: /target_nav_position
-  # msg_type: geometry_msgs/Pose2D
-  msg_type: sensor_msgs/Imu
+  msg_type: geometry_msgs/Pose2D
   max_freq: 20
   srcIP: self
   srcPort: 2101
@@ -30,5 +29,9 @@ send_topics:
 
 ####### receive these ROS messages from remote robots #######
 ## if no recv_topics needed, comment all these out
-# recv_topics:
+recv_topics:
+- topic_name: /usv_localization_imu
+  msg_type: sensor_msgs/Imu
+  srcIP: usv
+  srcPort: 1101
 

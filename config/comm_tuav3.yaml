@@ -3,9 +3,9 @@
 ### list all <IPname: IP> here (IPname can be set arbitrarily) ###
 IP:
   self: '*'   # '*' stands for all self IPs
-  usv:   192.168.147.11
+  usv:   192.168.147.211
   suav:  192.168.147.21
-  tuav1: 192.168.147.31
+  tuav1: 192.168.147.120
   tuav2: 192.168.147.41
   tuav3: 192.168.147.51
   local: 127.0.0.1 # just for local machine test
@@ -22,12 +22,12 @@ IP:
 ## if no recv_topics needed, comment all these out
 recv_topics:
 - topic_name: /tuav_align_flag
-  msg_type: std_msgs/Int8.h
+  msg_type: std_msgs/Int8
   srcIP: tuav2
   srcPort: 4101
 
 - topic_name: /tuav3_takeoff_flag
-  msg_type: std_msgs/Int8.h
+  msg_type: std_msgs/Int8
   srcIP: tuav1
   srcPort: 3102
 
@@ -42,6 +42,6 @@ recv_topics:
   srcPort: 1105
 
 - topic_name: /tuav3_stop_flag
-  msg_type: std_msgs/Int8.h
+  msg_type: std_msgs/Int8
   srcIP: tuav3
   srcPort: 1106
