@@ -1,7 +1,7 @@
 IP:
   self: '*'
   server: 192.168.147.21
-  client: 192.168.2.15
+  client: 192.168.147.211
 
 send_topics:
 - topic_name: /twtof/request

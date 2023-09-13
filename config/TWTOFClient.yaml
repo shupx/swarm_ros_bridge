@@ -1,7 +1,7 @@
 IP:
   self: '*'
   server: 192.168.147.21
-  client: 192.168.147.11
+  client: 192.168.147.211
   local: 127.0.0.1 # just for local machine test
 
 send_topics:
