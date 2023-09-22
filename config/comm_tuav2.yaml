@@ -5,7 +5,8 @@ IP:
   self: '*'   # '*' stands for all self IPs
   usv:   192.168.147.211
   suav:  192.168.147.21
-  tuav1: 192.168.147.120
+  suavmini: 192.168.147.22
+  tuav1: 192.168.147.31
   tuav2: 192.168.147.41
   tuav3: 192.168.147.51
   local: 127.0.0.1 # just for local machine test
