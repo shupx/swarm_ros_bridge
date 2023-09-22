@@ -1,0 +1,28 @@
+### max number of send_topics supported: 50
+
+### list all <IPname: IP> here (IPname can be set arbitrarily) ###
+IP:
+  self: '*'   # '*' stands for all self IPs
+  usv:   192.168.147.211
+  suav:  192.168.147.21
+  suavmini: 192.168.147.22
+  tuav1: 192.168.147.31
+  tuav2: 192.168.147.41
+  tuav3: 192.168.147.51
+  local: 127.0.0.1 # just for local machine test
+
+####### Send these ROS messages to remote robots #######
+## if no send_topics needed, comment all these out
+# send_topics:
+
+
+
+
+####### receive these ROS messages from remote robots #######
+## if no recv_topics needed, comment all these out
+recv_topics:
+- topic_name: /suav/uavState
+  msg_type: std_msgs/Int8
+  srcIP: suav
+  srcPort: 2103
+
