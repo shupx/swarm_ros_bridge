@@ -41,3 +41,7 @@ recv_topics:
   srcIP: usv 
   srcPort: 1102
 
+- topic_name: /target_lidar_position
+  msg_type: geometry_msgs/Pose2D
+  srcIP: usv
+  srcPort: 1107

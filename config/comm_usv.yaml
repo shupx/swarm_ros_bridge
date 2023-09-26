@@ -50,6 +50,13 @@ send_topics:
   srcIP: self
   srcPort: 1106
 
+- topic_name: /target_lidar_position
+  msg_type: geometry_msgs/Pose2D
+  max_freq: 10
+  srcIP: self
+  srcPort: 1107
+
+
 
 ####### receive these ROS messages from remote robots #######
 ## if no recv_topics needed, comment all these out
