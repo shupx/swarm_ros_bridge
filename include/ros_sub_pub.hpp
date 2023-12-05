@@ -51,6 +51,10 @@
 #define MSG_TYPE7 "geometry_msgs/Pose2D"
 #define MSG_CLASS7 geometry_msgs::Pose2D
 
+#include <geometry_msgs/PoseStamped.h>
+#define MSG_TYPE8 "geometry_msgs/PoseStamped"
+#define MSG_CLASS8 geometry_msgs::PoseStamped
+
 // #include <xxx/yy.h>
 // #define MSG_TYPE4 "xxx/yy"
 // #define MSG_CLASS4 xxx::yy

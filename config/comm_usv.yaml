@@ -9,6 +9,7 @@ IP:
   tuav1: 192.168.147.31
   tuav2: 192.168.147.41
   tuav3: 192.168.147.51
+  arm: 192.168.147.168
   local: 127.0.0.1 # just for local machine test
 
 ####### Send these ROS messages to remote robots #######
@@ -71,3 +72,12 @@ recv_topics:
   srcIP: suav
   srcPort: 2102
 
+- topic_name: /usv/largebox_pos
+  msg_type: geometry_msgs/PoseStamped
+  srcIP: arm
+  srcPort: 1101
+
+- topic_name: /usv/usvarm_detect
+  msg_type: std_msgs/Int8
+  srcIP: arm
+  srcPort: 1102
