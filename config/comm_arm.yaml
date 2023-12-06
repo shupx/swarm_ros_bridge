@@ -34,8 +34,3 @@ recv_topics:
   msg_type: std_msgs/Int8
   srcIP: tuav1
   srcPort: 3101
-
-- topic_name: /suav/uavState
-  msg_type: std_msgs/Int8
-  srcIP: suav
-  srcPort: 2103

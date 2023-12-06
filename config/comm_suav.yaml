@@ -41,8 +41,3 @@ recv_topics:
   msg_type: std_msgs/Int8
   srcIP: usv
   srcPort: 1102
-
-- topic_name: /usv/largebox_pos
-  msg_type: geometry_msgs/PoseStamped
-  srcIP: arm
-  srcPort: 1101
