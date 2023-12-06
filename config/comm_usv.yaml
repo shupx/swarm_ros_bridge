@@ -7,15 +7,15 @@ IP:
   suav:  192.168.147.21
   suavmini: 192.168.147.22
   tuav1: 192.168.147.31
-  tuav2: 192.168.147.41
-  tuav3: 192.168.147.51
+  tuav1: 192.168.147.42
+  tuav2: 192.168.147.43
   arm: 192.168.147.168
   local: 127.0.0.1 # just for local machine test
 
 ####### Send these ROS messages to remote robots #######
 ## if no send_topics needed, comment all these out
 send_topics:
-- topic_name: /usv/imu/data
+- topic_name: /mavros/imu/data
   msg_type: sensor_msgs/Imu
   max_freq: 200
   srcIP: self
@@ -57,8 +57,6 @@ send_topics:
   srcIP: self
   srcPort: 1107
 
-
-
 ####### receive these ROS messages from remote robots #######
 ## if no recv_topics needed, comment all these out
 recv_topics:
@@ -76,8 +74,3 @@ recv_topics:
   msg_type: geometry_msgs/PoseStamped
   srcIP: arm
   srcPort: 1101
-
-- topic_name: /usv/usvarm_detect
-  msg_type: std_msgs/Int8
-  srcIP: arm
-  srcPort: 1102
