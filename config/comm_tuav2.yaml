@@ -6,9 +6,10 @@ IP:
   usv:   192.168.147.211
   suav:  192.168.147.21
   suavmini: 192.168.147.22
-  tuav1: 192.168.147.31
-  tuav2: 192.168.147.41
+  tuav1: 192.168.147.42
+  tuav2: 192.168.147.43
   tuav3: 192.168.147.51
+  arm: 192.168.147.168
   local: 127.0.0.1 # just for local machine test
 
 ####### Send these ROS messages to remote robots #######
@@ -19,8 +20,6 @@ send_topics:
   max_freq: 20
   srcIP: self
   srcPort: 4105
-
-
 
 ####### receive these ROS messages from remote robots #######
 ## if no recv_topics needed, comment all these out
@@ -44,3 +43,13 @@ recv_topics:
   msg_type: std_msgs/Int8
   srcIP: tuav2
   srcPort: 1104
+
+- topic_name: /usv/largebox_pos
+  msg_type: geometry_msgs/PoseStamped
+  srcIP: arm
+  srcPort: 1101
+
+- topic_name: /usv/usvarm_detect
+  msg_type: std_msgs/Int8
+  srcIP: arm
+  srcPort: 1102
