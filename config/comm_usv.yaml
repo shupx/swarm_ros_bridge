@@ -27,30 +27,6 @@ send_topics:
   srcIP: self
   srcPort: 1102
 
-- topic_name: /tuav2_des_pos
-  msg_type: geometry_msgs/Pose2D
-  max_freq: 20
-  srcIP: self
-  srcPort: 1103
-
-- topic_name: /tuav2_stop_flag
-  msg_type: std_msgs/Int8
-  max_freq: 1
-  srcIP: self
-  srcPort: 1104
-
-- topic_name: /tuav3_des_pos
-  msg_type: geometry_msgs/Pose2D
-  max_freq: 20
-  srcIP: self
-  srcPort: 1105
-
-- topic_name: /tuav3_stop_flag
-  msg_type: std_msgs/Int8
-  max_freq: 1
-  srcIP: self
-  srcPort: 1106
-
 - topic_name: /target_lidar_position
   msg_type: geometry_msgs/Pose2D
   max_freq: 10
