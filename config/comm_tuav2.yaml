@@ -15,34 +15,35 @@ IP:
 ####### Send these ROS messages to remote robots #######
 ## if no send_topics needed, comment all these out
 send_topics:
-- topic_name: /tuav2_des_pos
+- topic_name: /tuav2/neighbor_pos
   msg_type: geometry_msgs/Vector3
+  max_freq: 50
+  srcIP: self
+  srcPort: 4201
+
+- topic_name: /tuav2/neighbor_sync_signal
+  msg_type: std_msgs/Int8
   max_freq: 20
   srcIP: self
-  srcPort: 4105
+  srcPort: 4202
 
 ####### receive these ROS messages from remote robots #######
 ## if no recv_topics needed, comment all these out
 recv_topics:
-- topic_name: /tuav2_takeoff_flag
+- topic_name: /tuav1/single_task_finish
   msg_type: std_msgs/Int8
   srcIP: tuav1
   srcPort: 3101
 
-- topic_name: /usv/mavros/imu
-  msg_type: sensor_msgs/Imu
-  srcIP: usv
-  srcPort: 1101
-
-- topic_name: /tuav3_des_pos
+- topic_name: /tuav3/neighbor_pos
   msg_type: geometry_msgs/Vector3
   srcIP: tuav3
-  srcPort: 5105
+  srcPort: 4301
 
-- topic_name: /tuav2_stop_flag
+- topic_name: /tuav3/neighbor_sync_signal
   msg_type: std_msgs/Int8
-  srcIP: tuav2
-  srcPort: 1104
+  srcIP: tuav3
+  srcPort: 4302
 
 - topic_name: /usv/largebox_pos
   msg_type: geometry_msgs/PoseStamped
@@ -51,5 +52,10 @@ recv_topics:
 
 - topic_name: /usv/usvarm_detect
   msg_type: std_msgs/Int8
-  srcIP: arm
+  srcIP: usv
   srcPort: 1102
+  
+- topic_name: /usv/compass
+  msg_type: sensor_msgs/Imu
+  srcIP: usv
+  srcPort: 1101
