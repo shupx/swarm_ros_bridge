@@ -10,6 +10,7 @@ IP:
   tuav2: 192.168.147.43
   tuav3: 192.168.147.51
   arm: 192.168.147.168
+  tuav6: 192.168.147.61
   local: 127.0.0.1 # just for local machine test
 
 ####### Send these ROS messages to remote robots #######
