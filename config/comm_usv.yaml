@@ -38,12 +38,12 @@ send_topics:
 ## if no recv_topics needed, comment all these out
 recv_topics:
 - topic_name: /target_nav_position
-  msg_type: geometry_msgs/Pose2D
+  msg_type: geometry_msgs/PoseStamped
   srcIP: suav
   srcPort: 2101
 
 - topic_name: /usv_nav_position
-  msg_type: geometry_msgs/Pose2D
+  msg_type: geometry_msgs/PoseStamped
   srcIP: suav
   srcPort: 2102
 

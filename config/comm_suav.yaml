@@ -17,13 +17,13 @@ IP:
 ## if no send_topics needed, comment all these out
 send_topics:
 - topic_name: /suav/pod/target_nav_position
-  msg_type: geometry_msgs/Pose2D
+  msg_type: geometry_msgs/PoseStamped
   max_freq: 20
   srcIP: self
   srcPort: 2101
 
 - topic_name: /suav/pod/usv_nav_position
-  msg_type: geometry_msgs/Pose2D
+  msg_type: geometry_msgs/PoseStamped
   max_freq: 20
   srcIP: self
   srcPort: 2102
