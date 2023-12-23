@@ -35,3 +35,8 @@ recv_topics:
   msg_type: std_msgs/Int8
   srcIP: tuav1
   srcPort: 3101
+  
+- topic_name: /usv/state
+  msg_type: std_msgs/String
+  srcIP: usv
+  srcPort: 1103
