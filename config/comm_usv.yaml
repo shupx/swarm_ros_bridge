@@ -16,7 +16,7 @@ IP:
 ####### Send these ROS messages to remote robots #######
 ## if no send_topics needed, comment all these out
 send_topics:
-- topic_name: /mavros/imu/data
+- topic_name: /usv/imu/data
   msg_type: sensor_msgs/Imu
   max_freq: 200
   srcIP: self
@@ -27,6 +27,12 @@ send_topics:
   max_freq: 1
   srcIP: self
   srcPort: 1102
+
+- topic_name: /usv/state
+  msg_type: std_msgs/String
+  max_freq: 10
+  srcIP: self
+  srcPort: 1103
   
 - topic_name: /target_lidar_position
   msg_type: geometry_msgs/Pose2D
