@@ -1,20 +1,21 @@
-
+### max number of send_topics supported: 50
 
 ### list all <IPname: IP> here (IPname can be set arbitrarily) ###
 IP:
   self: '*'   # '*' stands for all self IPs
   usv:   192.168.147.211
   suav:  192.168.147.21
+  suavmini: 192.168.147.22
   tuav1: 192.168.147.31
   tuav2: 192.168.147.42
   tuav3: 192.168.147.43
   tuav6: 192.168.147.61
+  arm: 192.168.147.168
   local: 127.0.0.1 # just for local machine test
 
 ####### Send these ROS messages to remote robots #######
 ## if no send_topics needed, comment all these out
 send_topics:
-  
 - topic_name: /tuav6/single_task_finish
   msg_type: std_msgs/Int8
   max_freq: 50
@@ -33,11 +34,6 @@ recv_topics:
   msg_type: geometry_msgs/Vector3
   srcIP: usv
   srcPort: 1103
-
-- topic_name: /usv/usvarm_detect
-  msg_type: std_msgs/Int8
-  srcIP: usv
-  srcPort: 1102
   
 - topic_name: /usv/compass
   msg_type: sensor_msgs/Imu
