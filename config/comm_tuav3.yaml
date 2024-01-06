@@ -11,6 +11,7 @@ IP:
   tuav3: 192.168.147.43
   arm: 192.168.147.168
   tuav6: 192.168.147.61
+  streamer: 192.168.147.99
   local: 127.0.0.1 # just for local machine test
 
 ####### Send these ROS messages to remote robots #######

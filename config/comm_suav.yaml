@@ -11,6 +11,7 @@ IP:
   tuav3: 192.168.147.43
   arm: 192.168.147.168
   tuav6: 192.168.147.61
+  streamer: 192.168.147.99
   local: 127.0.0.1 # just for local machine test
 
 ####### Send these ROS messages to remote robots #######
@@ -39,6 +40,12 @@ send_topics:
   max_freq: 20
   srcIP: self
   srcPort: 1010
+
+- topic_name: /suav/toStreamer
+  msg_type: std_msgs/Int8
+  max_freq: 50
+  srcIP: self
+  srcPort: 2104
 
 
 ####### receive these ROS messages from remote robots #######
