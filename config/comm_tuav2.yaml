@@ -7,40 +7,93 @@ IP:
   suav:  192.168.147.21
   suavmini: 192.168.147.22
   tuav1: 192.168.147.31
-  tuav2: 192.168.147.41
-  tuav3: 192.168.147.51
+  tuav2: 192.168.147.42
+  tuav3: 192.168.147.43
+  arm: 192.168.147.168
+  tuav6: 192.168.147.61
+  streamer: 192.168.147.99
   local: 127.0.0.1 # just for local machine test
 
 ####### Send these ROS messages to remote robots #######
 ## if no send_topics needed, comment all these out
 send_topics:
-- topic_name: /tuav2_des_pos
+- topic_name: /tuav2/neighbor_pos
   msg_type: geometry_msgs/Vector3
+  max_freq: 50
+  srcIP: self
+  srcPort: 4201
+
+- topic_name: /tuav2/neighbor_sync_signal
+  msg_type: std_msgs/Int8
   max_freq: 20
   srcIP: self
-  srcPort: 4105
+  srcPort: 4202
 
-
+- topic_name: /tuav2/state
+  msg_type: std_msgs/String
+  max_freq: 20
+  srcIP: self
+  srcPort: 1010
 
 ####### receive these ROS messages from remote robots #######
 ## if no recv_topics needed, comment all these out
 recv_topics:
-- topic_name: /tuav2_takeoff_flag
+- topic_name: /tuav1/single_task_finish
   msg_type: std_msgs/Int8
   srcIP: tuav1
   srcPort: 3101
 
-- topic_name: /usv/mavros/imu
+- topic_name: /tuav6/single_task_finish
+  msg_type: std_msgs/Int8
+  srcIP: tuav6
+  srcPort: 6101
+
+- topic_name: /tuav3/neighbor_pos
+  msg_type: geometry_msgs/Vector3
+  srcIP: tuav3
+  srcPort: 4301
+
+- topic_name: /tuav3/neighbor_sync_signal
+  msg_type: std_msgs/Int8
+  srcIP: tuav3
+  srcPort: 4302
+
+- topic_name: /usv/largebox_pos
+  msg_type: geometry_msgs/PoseStamped
+  srcIP: arm
+  srcPort: 1101
+  
+- topic_name: /usv/compass
   msg_type: sensor_msgs/Imu
   srcIP: usv
   srcPort: 1101
 
-- topic_name: /tuav3_des_pos
-  msg_type: geometry_msgs/Vector3
-  srcIP: tuav3
-  srcPort: 5105
+- topic_name: /arm/state
+  msg_type: std_msgs/String
+  srcIP: arm
+  srcPort: 1010
 
-- topic_name: /tuav2_stop_flag
-  msg_type: std_msgs/Int8
-  srcIP: tuav2
-  srcPort: 1104
+- topic_name: /suav/state
+  msg_type: std_msgs/String
+  srcIP: suav
+  srcPort: 1010
+
+- topic_name: /tuav1/state
+  msg_type: std_msgs/String
+  srcIP: tuav1
+  srcPort: 1010
+
+- topic_name: /tuav3/state
+  msg_type: std_msgs/String
+  srcIP: tuav3
+  srcPort: 1010
+
+- topic_name: /tuav6/state
+  msg_type: std_msgs/String
+  srcIP: tuav6
+  srcPort: 1010
+
+- topic_name: /usv/state
+  msg_type: std_msgs/String
+  srcIP: usv
+  srcPort: 1010
