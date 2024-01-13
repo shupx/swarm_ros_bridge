@@ -37,7 +37,13 @@ send_topics:
 ####### receive these ROS messages from remote robots #######
 ## if no recv_topics needed, comment all these out
 recv_topics:
-- topic_name: /tuav1/single_task_finish
+- topic_name: /tuav2/neighbor_sync_signal
+  msg_type: std_msgs/Int8
+  max_freq: 20
+  srcIP: self
+  srcPort: 4202
+  
+- topic_name: /tuav2/single_task_finish
   msg_type: std_msgs/Int8
   srcIP: tuav1
   srcPort: 3101
