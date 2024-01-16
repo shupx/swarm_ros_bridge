@@ -28,12 +28,6 @@ send_topics:
   max_freq: 1
   srcIP: self
   srcPort: 1102
-
-- topic_name: /usv/state
-  msg_type: std_msgs/String
-  max_freq: 10
-  srcIP: self
-  srcPort: 1103
   
 - topic_name: /target_lidar_position
   msg_type: geometry_msgs/Pose2D
@@ -45,7 +39,7 @@ send_topics:
   msg_type: std_msgs/String
   max_freq: 20
   srcIP: self
-  srcPort: 1010
+  srcPort: 10010
 
 ####### receive these ROS messages from remote robots #######
 ## if no recv_topics needed, comment all these out
