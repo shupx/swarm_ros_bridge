@@ -62,29 +62,29 @@ recv_topics:
 - topic_name: /arm/state
   msg_type: std_msgs/String
   srcIP: arm
-  srcPort: 1010
+  srcPort: 10010
 
 - topic_name: /suav/state
   msg_type: std_msgs/String
   srcIP: suav
-  srcPort: 1010
+  srcPort: 10010
 
 - topic_name: /tuav1/state
   msg_type: std_msgs/String
   srcIP: tuav1
-  srcPort: 1010
+  srcPort: 10010
 
 - topic_name: /tuav2/state
   msg_type: std_msgs/String
   srcIP: tuav2
-  srcPort: 1010
+  srcPort: 10010
 
 - topic_name: /tuav3/state
   msg_type: std_msgs/String
   srcIP: tuav3
-  srcPort: 1010
+  srcPort: 10010
 
 - topic_name: /tuav6/state
   msg_type: std_msgs/String
   srcIP: tuav6
-  srcPort: 1010
+  srcPort: 10010
