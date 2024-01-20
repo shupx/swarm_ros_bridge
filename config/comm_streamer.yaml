@@ -1,8 +1,5 @@
-### max number of send_topics supported: 50
-
-### list all <IPname: IP> here (IPname can be set arbitrarily) ###
 IP:
-  self: '*'   # '*' stands for all self IPs
+  self: '*'
   usv:   192.168.147.211
   suav:  192.168.147.21
   suavmini: 192.168.147.22
@@ -11,18 +8,34 @@ IP:
   tuav3: 192.168.147.43
   arm: 192.168.147.168
   tuav6: 192.168.147.61
+  tuav8: 192.168.147.81
   streamer: 192.168.147.99
-  local: 127.0.0.1 # just for local machine test
+  local: 127.0.0.1
 
-####### Send these ROS messages to remote robots #######
-## if no send_topics needed, comment all these out
 # send_topics:
 
-
-####### receive these ROS messages from remote robots #######
-## if no recv_topics needed, comment all these out
 recv_topics:
-- topic_name: /suav/toStreamer
-  msg_type: std_msgs/Int8
+- topic_name: /suav/state
+  msg_type: std_msgs/String
   srcIP: suav
-  srcPort: 2104
+  srcPort: 10010
+
+- topic_name: /tuav6/state
+  msg_type: std_msgs/String
+  srcIP: tuav6
+  srcPort: 10010
+
+- topic_name: /tuav8/state
+  msg_type: std_msgs/String
+  srcIP: tuav8
+  srcPort: 10010
+
+- topic_name: /tuav2/state
+  msg_type: std_msgs/String
+  srcIP: tuav2
+  srcPort: 10010
+
+- topic_name: /tuav3/state
+  msg_type: std_msgs/String
+  srcIP: tuav3
+  srcPort: 10010

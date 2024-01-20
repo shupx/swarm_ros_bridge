@@ -178,6 +178,11 @@ void stop_recv(int i)
   topic_pubs[i].shutdown(); // unadvertise
 }
 
+bool respawn = false;
+void respawnCallback(const std_msgs::Empty::ConstPtr & msg) {
+    respawn = true;
+}
+
 //TODO: generate or delete topic message transfers through a remote zmq service.
 
 int main(int argc, char **argv)
@@ -186,6 +191,7 @@ int main(int argc, char **argv)
   ros::NodeHandle nh("~");
   ros::NodeHandle nh_public;
   ns = ros::this_node::getNamespace(); // namespace of this node
+  ros::Rate rate(50);
 
   std::cout << "--------[bridge_node]-------" << std::endl;
   std::cout << "namespaces=" << ns << std::endl;
@@ -323,6 +329,8 @@ int main(int argc, char **argv)
     topic_pubs.emplace_back(publisher);
   }
 
+  ros::Subscriber sub = nh_public.subscribe("/bridge/respawn", 1, &respawnCallback);
+
   // ****************** launch receive threads *****************************
   for (int32_t i=0; i < len_recv; ++i)
   {
@@ -331,7 +339,11 @@ int main(int argc, char **argv)
     recv_threads.emplace_back(std::thread(&recv_func, i));
   }
 
-  ros::spin();
+  while (ros::ok()) {
+    if (respawn) break;
+    ros::spinOnce();
+    rate.sleep();
+  } 
 
   // ***************** stop send/receive ******************************
   for (int32_t i=0; i < len_send; ++i){
