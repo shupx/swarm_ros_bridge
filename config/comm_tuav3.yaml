@@ -44,12 +44,12 @@ recv_topics:
 
 - topic_name: /tuav2/neighbor_pos
   msg_type: geometry_msgs/Vector3
-  srcIP: tuav3
+  srcIP: tuav2
   srcPort: 4201
 
 - topic_name: /tuav2/neighbor_sync_signal
   msg_type: std_msgs/Int8
-  srcIP: tuav3
+  srcIP: tuav2
   srcPort: 4202
 
 - topic_name: /usv/largebox_pos
@@ -85,6 +85,11 @@ recv_topics:
 - topic_name: /tuav6/state
   msg_type: std_msgs/String
   srcIP: tuav6
+  srcPort: 10010
+
+- topic_name: /tuav8/state
+  msg_type: std_msgs/String
+  srcIP: tuav8
   srcPort: 10010
 
 - topic_name: /usv/state
