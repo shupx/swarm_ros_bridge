@@ -82,3 +82,8 @@ recv_topics:
   msg_type: std_msgs/String
   srcIP: tuav6
   srcPort: 10010
+
+- topic_name: /tuav8/state
+  msg_type: std_msgs/String
+  srcIP: tuav8
+  srcPort: 10010
