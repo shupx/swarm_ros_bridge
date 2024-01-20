@@ -23,6 +23,8 @@
 #define __ROS_SUB_PUB__
 #include <ros/ros.h>
 
+#include <std_msgs/Empty.h>
+
 #include <sensor_msgs/Imu.h>
 #define MSG_TYPE1 "sensor_msgs/Imu"
 #define MSG_CLASS1 sensor_msgs::Imu
