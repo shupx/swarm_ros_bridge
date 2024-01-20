@@ -3,6 +3,10 @@
   <arg name="name" default="" />
   <node pkg="swarm_ros_bridge" type="bridge_node" name="swarm_bridge_node" output="screen" respawn="true">
     <rosparam command="load" file="$(find swarm_ros_bridge)/config/comm_$(arg name).yaml" />
+  </node>  
+  
+  <node pkg="swarm_ros_bridge" type="name_state_checker.py" name="name_state_checker" output="screen">
+    <param name="name" value="$(arg name)" />
+    <rosparam command="load" file="$(find swarm_ros_bridge)/config/all_names.yaml" />
   </node>
-
 </launch>
