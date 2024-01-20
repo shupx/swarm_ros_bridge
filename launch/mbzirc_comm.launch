@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
   <arg name="name" default="" />
-  <node pkg="swarm_ros_bridge" type="bridge_node" name="swarm_bridge_node" output="screen" >
+  <node pkg="swarm_ros_bridge" type="bridge_node" name="swarm_bridge_node" output="screen" respawn="true">
     <rosparam command="load" file="$(find swarm_ros_bridge)/config/comm_$(arg name).yaml" />
   </node>
 
