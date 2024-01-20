@@ -87,4 +87,3 @@ recv_topics:
   msg_type: std_msgs/String
   srcIP: tuav8
   srcPort: 10010
-
