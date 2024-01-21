@@ -27,10 +27,6 @@ send_topics:
   srcPort: 10010
 
 recv_topics:
-- topic_name: /tuav6_takeoff_flag
-  msg_type: std_msgs/Int8
-  srcIP: usv 
-  srcPort: 1104
 
 - topic_name: /usv/smallbox_pos
   msg_type: geometry_msgs/Vector3
@@ -66,8 +62,23 @@ recv_topics:
   msg_type: std_msgs/String
   srcIP: tuav3
   srcPort: 10010
+  
+- topic_name: /tuav8/state
+  msg_type: std_msgs/String
+  srcIP: tuav8
+  srcPort: 10010
 
 - topic_name: /usv/state
   msg_type: std_msgs/String
   srcIP: usv
   srcPort: 10010
+  
+- topic_name: /tuav_takeoff_flag
+  msg_type: std_msgs/Int8
+  srcIP: usv 
+  srcPort: 1102
+  
+- topic_name: /target_lidar_position
+  msg_type: geometry_msgs/Pose2D
+  srcIP: usv
+  srcPort: 1107
