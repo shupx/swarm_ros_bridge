@@ -19,12 +19,6 @@ send_topics:
   srcIP: self
   srcPort: 1101
 
-- topic_name: /usv/usvarm_detect
-  msg_type: std_msgs/Int8
-  max_freq: 20
-  srcIP: self
-  srcPort: 1102
-
 - topic_name: /arm/state
   msg_type: std_msgs/String
   max_freq: 20
@@ -34,20 +28,9 @@ send_topics:
 recv_topics:
 - topic_name: /tuav2/neighbor_sync_signal
   msg_type: std_msgs/Int8
-  max_freq: 20
-  srcIP: self
+  srcIP: tuav2
   srcPort: 4202
   
-- topic_name: /tuav2/single_task_finish
-  msg_type: std_msgs/Int8
-  srcIP: tuav1
-  srcPort: 3101
-  
-- topic_name: /usv/state
-  msg_type: std_msgs/String
-  srcIP: usv
-  srcPort: 1103
-
 - topic_name: /suav/state
   msg_type: std_msgs/String
   srcIP: suav
@@ -71,6 +54,11 @@ recv_topics:
 - topic_name: /tuav6/state
   msg_type: std_msgs/String
   srcIP: tuav6
+  srcPort: 10010
+
+- topic_name: /tuav8/state
+  msg_type: std_msgs/String
+  srcIP: tuav8
   srcPort: 10010
 
 - topic_name: /usv/state
