@@ -2,6 +2,8 @@
 <launch>
   <arg name="name" default="" />
   <arg name="auto_respawn" default="false" />
+  <arg name="force_respawn" default="false" />
+  <arg name="loop_time" default="5.0"/>
   <node pkg="swarm_ros_bridge" type="bridge_node" name="swarm_bridge_node" output="screen" respawn="true">
     <rosparam command="load" file="$(find swarm_ros_bridge)/config/comm_$(arg name).yaml" />
   </node>  
@@ -9,6 +11,8 @@
   <group if="$(arg auto_respawn)">
     <node pkg="swarm_ros_bridge" type="name_state_checker.py" name="name_state_checker" output="screen">
       <param name="name" value="$(arg name)" />
+      <param name="force_respawn" value="$(arg force_respawn)" />
+      <param name="loop_time" value="$(arg loop_time)" />
       <rosparam command="load" file="$(find swarm_ros_bridge)/config/all_names.yaml" />
     </node>
   </group>
