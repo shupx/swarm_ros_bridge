@@ -1,12 +1,15 @@
 <?xml version="1.0"?>
 <launch>
   <arg name="name" default="" />
+  <arg name="auto_respawn" default="false" />
   <node pkg="swarm_ros_bridge" type="bridge_node" name="swarm_bridge_node" output="screen" respawn="true">
     <rosparam command="load" file="$(find swarm_ros_bridge)/config/comm_$(arg name).yaml" />
   </node>  
-  
-  <node pkg="swarm_ros_bridge" type="name_state_checker.py" name="name_state_checker" output="screen">
-    <param name="name" value="$(arg name)" />
-    <rosparam command="load" file="$(find swarm_ros_bridge)/config/all_names.yaml" />
-  </node>
+
+  <group if="$(arg auto_respawn)">
+    <node pkg="swarm_ros_bridge" type="name_state_checker.py" name="name_state_checker" output="screen">
+      <param name="name" value="$(arg name)" />
+      <rosparam command="load" file="$(find swarm_ros_bridge)/config/all_names.yaml" />
+    </node>
+  </group>
 </launch>
