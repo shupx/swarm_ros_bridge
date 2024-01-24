@@ -8,7 +8,7 @@
     <rosparam command="load" file="$(find swarm_ros_bridge)/config/comm_$(arg name).yaml" />
   </node>  
 
-  <group if="$(arg auto_respawn)">
+  <group if="$(eval arg('auto_respawn') or arg('force_respawn'))">
     <node pkg="swarm_ros_bridge" type="name_state_checker.py" name="name_state_checker" output="screen">
       <param name="name" value="$(arg name)" />
       <param name="force_respawn" value="$(arg force_respawn)" />
