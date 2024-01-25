@@ -21,7 +21,7 @@ send_topics:
 
 - topic_name: /tuav2/neighbor_sync_signal
   msg_type: std_msgs/Int8
-  max_freq: 20
+  max_freq: 50
   srcIP: self
   srcPort: 4202
 
