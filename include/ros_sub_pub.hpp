@@ -57,6 +57,10 @@
 #define MSG_TYPE8 "geometry_msgs/PoseStamped"
 #define MSG_CLASS8 geometry_msgs::PoseStamped
 
+#include <std_msgs/Float64.h>
+#define MSG_TYPE9 "std_msgs/Float64"
+#define MSG_CLASS9 std_msgs::Float64
+
 // #include <xxx/yy.h>
 // #define MSG_TYPE4 "xxx/yy"
 // #define MSG_CLASS4 xxx::yy

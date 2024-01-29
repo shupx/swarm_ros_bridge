@@ -21,7 +21,7 @@ send_topics:
 
 - topic_name: /tuav2/neighbor_sync_signal
   msg_type: std_msgs/Int8
-  max_freq: 20
+  max_freq: 50
   srcIP: self
   srcPort: 4202
 
@@ -30,6 +30,18 @@ send_topics:
   max_freq: 20
   srcIP: self
   srcPort: 10010
+  
+- topic_name: /tuav2/neighbor_time
+  msg_type: std_msgs/Float64
+  max_freq: 50
+  srcIP: self
+  srcPort: 4203
+  
+- topic_name: /tuav2/neighbor_yaw
+  msg_type: std_msgs/Int8
+  max_freq: 50
+  srcIP: self
+  srcPort: 4204
 
 recv_topics:
 - topic_name: /tuav1/single_task_finish
@@ -96,3 +108,23 @@ recv_topics:
   msg_type: std_msgs/String
   srcIP: usv
   srcPort: 10010
+  
+- topic_name: /tuav6/largebox_pos
+  msg_type: geometry_msgs/Pose2D
+  srcIP: tuav6
+  srcPort: 6666
+  
+- topic_name: /tuav8/largebox_pos
+  msg_type: geometry_msgs/Pose2D
+  srcIP: tuav8
+  srcPort: 8888
+  
+- topic_name: /tuav3/neighbor_time
+  msg_type: std_msgs/Float64
+  srcIP: tuav3
+  srcPort: 4303
+  
+- topic_name: /tuav3/neighbor_yaw
+  msg_type: std_msgs/Int8
+  srcIP: tuav3
+  srcPort: 4304
