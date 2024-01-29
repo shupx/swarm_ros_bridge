@@ -15,16 +15,10 @@ IP:
 send_topics:
 - topic_name: /usv/imu/data
   msg_type: sensor_msgs/Imu
-  max_freq: 200
+  max_freq: 60
   srcIP: self
   srcPort: 1101
 
-- topic_name: /tuav1_takeoff_flag
-  msg_type: std_msgs/Int8
-  max_freq: 1
-  srcIP: self
-  srcPort: 1102
-  
 - topic_name: /target_lidar_position
   msg_type: geometry_msgs/Pose2D
   max_freq: 10
