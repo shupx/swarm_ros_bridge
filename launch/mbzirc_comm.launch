@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
   <arg name="name" default="" />
-  <arg name="auto_respawn" default="true" />
+  <arg name="auto_respawn" default="false" />
   <arg name="force_respawn" default="false" />
   <arg name="loop_time" default="5.0"/>
   <node pkg="swarm_ros_bridge" type="bridge_node" name="swarm_bridge_node" output="screen" respawn="true">
