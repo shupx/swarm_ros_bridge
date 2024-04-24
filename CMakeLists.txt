@@ -26,3 +26,8 @@ target_link_libraries(bridge_node
    zmq
    zmqpp
 )
+
+
+install(TARGETS bridge_node
+  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
