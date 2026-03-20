@@ -1,5 +1,7 @@
 # swarm_ros_bridge
 
+> :heavy_exclamation_mark: The author strongly recommend you to move to the zenoh ROS bridge, which has automatic ROS topic discovery mechanism and port management. ROS1 zenoh bridge: https://github.com/eclipse-zenoh/zenoh-plugin-ros1   ROS2 zenoh bridge: https://github.com/eclipse-zenoh/zenoh-plugin-ros2dds
+
 ## Introduction
 
 A lightweight middle interface ROS package mainly based on [ZeroMQ](https://zeromq.org). It enables the specified ROS messages transmission among swarm robots through socket communication. The purpose of this package is to replace the traditional way of [running ROS across multiple machines in ROS1](https://wiki.ros.org/ROS/Tutorials/MultipleMachines), which has some drawbacks under swarm robots situation.
