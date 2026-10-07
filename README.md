@@ -1,6 +1,7 @@
 # swarm_ros_bridge
 
-> :heavy_exclamation_mark: (Updated on 2026.3.20) The author strongly recommend you to move to the zenoh ROS bridge, which has automatic ROS topic discovery mechanism and better port management. ROS1 zenoh bridge: https://github.com/eclipse-zenoh/zenoh-plugin-ros1   ROS2 zenoh bridge: https://github.com/eclipse-zenoh/zenoh-plugin-ros2dds  But the topic remapping and throttling is better in swarm_ros_bridge.
+> :heavy_exclamation_mark: (Updated on 2026.10.7) For ROS2 version, please move to [zenoh-plugin-ros2rcl](https://github.com/shupx/zenoh-plugin-ros2rcl) developed by me. It uses zenoh to forward specified ROS2 topics and services among multi-machines, and achieves better discovery mechanisms.
+
 
 ## Introduction
 
